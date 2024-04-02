@@ -1,13 +1,27 @@
-import React from "react"
-import "./App.css"
-import DatabaseManagement from "./views/DatabaseManagement"
+// routes
+import Router from "./routes"
+// theme
+import ThemeProvider from "./theme"
+// components
+import { ChartStyle } from "./components/chart"
+import ScrollToTop from "./components/ScrollToTop"
+import { ProgressBarStyle } from "./components/ProgressBar"
+import NotistackProvider from "./components/NotistackProvider"
+import MotionLazyContainer from "./components/animate/MotionLazyContainer"
 
-function App() {
+// ----------------------------------------------------------------------
+
+export default function App() {
 	return (
-		<div className="App">
-			<DatabaseManagement />
-		</div>
+		<MotionLazyContainer>
+			<ThemeProvider>
+				<NotistackProvider>
+					<ProgressBarStyle />
+					<ChartStyle />
+					<ScrollToTop />
+					<Router />
+				</NotistackProvider>
+			</ThemeProvider>
+		</MotionLazyContainer>
 	)
 }
-
-export default App
