@@ -1,9 +1,3 @@
-Project is running live on the link
-
-https://main.d8xxd1waej5k1.amplifyapp.com/
-
-
-
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## 1.Install
