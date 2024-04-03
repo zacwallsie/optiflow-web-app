@@ -21,7 +21,7 @@ import { OptiFlowLogo } from "../../../assets"
 
 const MENU_OPTIONS = [
 	{
-		label: "Home",
+		label: "Dashboard",
 		linkTo: "/dashboard/app",
 	},
 	{

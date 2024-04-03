@@ -7,11 +7,11 @@ import { PATH_DASHBOARD } from "../../routes/paths"
 import Page from "../../components/Page"
 import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs"
 
-export default function GeneralApp() {
+export default function DatabasesPage() {
 	return (
 		<Page title="OptiFlow">
 			<Container maxWidth={"lg"}>
-				<HeaderBreadcrumbs heading="Dashboard" links={[{ name: "Dashboard", href: PATH_DASHBOARD.root }]} />
+				<HeaderBreadcrumbs heading="Databases" links={[{ name: "Databases", href: PATH_DASHBOARD.databases }]} />
 			</Container>
 		</Page>
 	)

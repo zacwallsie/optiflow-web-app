@@ -38,6 +38,10 @@ export default function Page500() {
 						<Typography sx={{ color: "text.secondary" }}>There was an error, please try again later.</Typography>
 					</m.div>
 
+					<m.div variants={varBounce().in}>
+						<SeverErrorIllustration sx={{ height: 260, my: { xs: 5, sm: 10 } }} />
+					</m.div>
+
 					<Button to="/dashboard/app" size="large" variant="contained" component={RouterLink}>
 						Go to Home
 					</Button>

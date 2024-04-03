@@ -1,4 +1,4 @@
-import { Container } from "@mui/material"
+import { Container, Tab, Box, Tabs } from "@mui/material"
 
 // routes
 import { PATH_DASHBOARD } from "../../routes/paths"
@@ -7,11 +7,11 @@ import { PATH_DASHBOARD } from "../../routes/paths"
 import Page from "../../components/Page"
 import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs"
 
-export default function GeneralApp() {
+export default function QueriesPage() {
 	return (
 		<Page title="OptiFlow">
 			<Container maxWidth={"lg"}>
-				<HeaderBreadcrumbs heading="Dashboard" links={[{ name: "Dashboard", href: PATH_DASHBOARD.root }]} />
+				<HeaderBreadcrumbs heading="Queries" links={[{ name: "Queries", href: PATH_DASHBOARD.queries }]} />
 			</Container>
 		</Page>
 	)

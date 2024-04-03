@@ -40,6 +40,10 @@ export default function Page404() {
 						</Typography>
 					</m.div>
 
+					<m.div variants={varBounce().in}>
+						<PageNotFoundIllustration sx={{ height: 260, my: { xs: 5, sm: 10 } }} />
+					</m.div>
+
 					<Button to="/dashboard/app" size="large" variant="contained" component={RouterLink}>
 						Go to Home
 					</Button>
