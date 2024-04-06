@@ -11,7 +11,7 @@ export default function QueriesPage() {
 	return (
 		<Page title="OptiFlow">
 			<Container maxWidth={"lg"}>
-				<HeaderBreadcrumbs heading="Queries" links={[{ name: "Queries", href: PATH_DASHBOARD.queries }]} />
+				<HeaderBreadcrumbs heading="Queries" links={[{ name: "Queries", href: PATH_DASHBOARD.root }]} />
 			</Container>
 		</Page>
 	)

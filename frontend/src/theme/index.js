@@ -21,7 +21,6 @@ export default function ThemeProvider({ children }) {
 		typography,
 		breakpoints,
 		shape: { borderRadius: 0 },
-		direction: "vertical",
 		shadows: shadows.dark,
 		customShadows: customShadows.dark,
 	}

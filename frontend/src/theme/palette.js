@@ -34,25 +34,26 @@ const INFO = {
 	darker: "#04297A",
 }
 const SUCCESS = {
-	lighter: "#E9FCD4",
-	light: "#AAF27F",
-	main: "#54D62C",
-	dark: "#229A16",
-	darker: "#08660D",
+	lighter: "#B9E4C9", // A light but slightly more saturated green for background highlights.
+	light: "#69C794", // A vivid, lively green, making success states more noticeable.
+	main: "#34A853", // A strong, leaf green, balanced between brightness and saturation.
+	dark: "#1A8F4C", // A deep green with enhanced saturation for greater visual impact.
+	darker: "#0F7A40", // A dark, rich green, for when a strong success message is needed.
 }
+
 const WARNING = {
-	lighter: "#FFF7CD",
-	light: "#FFE16A",
-	main: "#FFC107",
-	dark: "#B78103",
-	darker: "#7A4F01",
+	lighter: "#FFF176", // A light yellow with a hint of saturation for soft alerts.
+	light: "#FFEE58", // A sunny yellow, bright and more engaging.
+	main: "#FFEB3B", // A golden yellow, vibrant and attention-grabbing.
+	dark: "#F9D835", // A deeper gold, adding richness and visibility.
+	darker: "#F6C026", // A muted but saturated gold, for pronounced warnings.
 }
 const ERROR = {
-	lighter: "#FFE7D9",
-	light: "#FFA48D",
-	main: "#FF4842",
-	dark: "#B72136",
-	darker: "#7A0C2E",
+	lighter: "#FFCDD2", // A light but vivid pinkish-red for gentle error indications.
+	light: "#EF9A9A", // A medium coral, warm and inviting despite signaling error.
+	main: "#E53935", // A bright, assertive red, clear and impossible to overlook.
+	dark: "#D32F2F", // A saturated, deep red for significant error alerts.
+	darker: "#C62828", // A very dark, rich red, conveying urgency and importance.
 }
 
 const GREY = {
