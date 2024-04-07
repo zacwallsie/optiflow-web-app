@@ -7,11 +7,15 @@ import { PATH_DASHBOARD } from "../../routes/paths"
 import Page from "../../components/Page"
 import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs"
 
+// sections
+import { QueriesTable } from "../../sections/@queries/index"
+
 export default function QueriesPage() {
 	return (
 		<Page title="OptiFlow">
-			<Container maxWidth={"lg"}>
+			<Container maxWidth={"false"}>
 				<HeaderBreadcrumbs heading="Queries" links={[{ name: "Queries", href: PATH_DASHBOARD.root }]} />
+				<QueriesTable></QueriesTable>
 			</Container>
 		</Page>
 	)

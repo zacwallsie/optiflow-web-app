@@ -26,41 +26,42 @@ import Grid from "@mui/material/Grid"
 import SearchIcon from "@mui/icons-material/Search"
 import InputBase from "@mui/material/InputBase"
 import { useNavigate } from "react-router-dom"
-// section utils
-import { DatabaseStatusIndicator, stableSort, getComparator } from "../section_utils/index"
 
-function createData(id, name, type, status, host, port) {
+// section utils
+import { QueryStatusIndicator, stableSort, getComparator } from "../section_utils/index"
+
+function createData(id, name, description, status, create_date, modified_date) {
 	return {
 		id,
 		name,
-		type,
+		description,
 		status,
-		host,
-		port,
+		create_date,
+		modified_date,
 	}
 }
 
 const rows = [
-	createData(1, "Prod DB", "MySQL", "Active", "prod-db.example.com", 3306),
-	createData(2, "Test DB", "PostgreSQL", "Idle", "test-db.example.com", 5432),
-	createData(3, "Dev DB", "MongoDB", "Disconnected", "dev-db.example.com", 27017),
-	createData(4, "Analytics DB", "Redis", "Active", "analytics-db.example.com", 6379),
-	createData(5, "Backup DB", "SQLite", "Idle", "backup-db.example.com", 0),
-	createData(6, "Staging DB", "MySQL", "Active", "staging-db.example.com", 3306),
-	createData(7, "Logs DB", "Elasticsearch", "Active", "logs-db.example.com", 9200),
-	createData(8, "Archive DB", "PostgreSQL", "Idle", "archive-db.example.com", 5432),
-	createData(9, "Cache DB", "Redis", "Disconnected", "cache-db.example.com", 6379),
-	createData(10, "Session DB", "MongoDB", "Active", "session-db.example.com", 27017),
-	createData(11, "Marketing DB", "Neo4j", "Active", "marketing-db.example.com", 7474),
-	createData(12, "HR DB", "Oracle", "Idle", "hr-db.example.com", 1521),
-	createData(13, "Sales DB", "DynamoDB", "Active", "sales-db.example.com", 8000),
-	createData(14, "Customer Support DB", "Cassandra", "Disconnected", "support-db.example.com", 9042),
-	createData(15, "Research DB", "MariaDB", "Idle", "research-db.example.com", 3306),
-	createData(16, "Financial DB", "SQL Server", "Active", "financial-db.example.com", 1433),
-	createData(17, "Product DB", "Couchbase", "Disconnected", "product-db.example.com", 8091),
-	createData(18, "Development DB", "PostgreSQL", "Active", "dev-db.example.com", 5432),
-	createData(19, "Testing DB", "MySQL", "Idle", "testing-db.example.com", 3306),
-	createData(20, "Operations DB", "SQLite", "Active", "operations-db.example.com", 0),
+	createData(1, "User Data Cleanup", "Remove inactive users from the system", "AwaitingTrigger", "2023-04-01", "2023-04-02"),
+	createData(2, "Daily Sales Report", "Generate daily sales report for marketing team", "AwaitingTrigger", "2023-03-25", "2023-03-25"),
+	createData(3, "Email Campaign Feedback", "Collect feedback on the latest email campaign", "Failed", "2023-03-20", "2023-03-21"),
+	createData(4, "Database Backup", "Weekly backup of all customer data", "PendingExecution", "2023-03-15", "2023-03-22"),
+	createData(5, "Data Migration", "Migrate user data to the new platform", "InProgress", "2023-03-10", "2023-03-17"),
+	createData(6, "System Health Check", "Run diagnostics on all system databases", "AwaitingTrigger", "2023-03-05", "2023-03-05"),
+	createData(7, "Update Customer Records", "Update records for all customers in the EU region", "Paused", "2023-02-28", "2023-03-01"),
+	createData(8, "Inventory Sync", "Synchronize inventory data with external suppliers", "PendingExecution", "2023-02-20", "2023-02-21"),
+	createData(9, "Optimize Search Engine", "Optimize search engine for faster query responses", "AwaitingTrigger", "2023-02-15", "2023-02-16"),
+	createData(10, "Audit Log Review", "Review audit logs for Q1", "AwaitingTrigger", "2023-02-10", "2023-02-17"),
+	createData(11, "Cleanup Temporary Files", "Remove all temporary files older than 30 days", "InProgress", "2023-02-05", "2023-02-12"),
+	createData(12, "Validate User Permissions", "Ensure all users have correct permissions", "Failed", "2023-01-31", "2023-02-01"),
+	createData(13, "Server Migration", "Migrate servers to new data center", "Paused", "2023-01-25", "2023-01-26"),
+	createData(14, "Update Pricing Info", "Update product pricing information in the database", "AwaitingTrigger", "2023-01-20", "2023-01-21"),
+	createData(15, "Legacy Data Archival", "Archive all legacy data before 2015", "AwaitingTrigger", "2023-01-15", "2023-01-16"),
+	createData(16, "Security Patch Update", "Apply latest security patches to the database", "AwaitingTrigger", "2023-01-10", "2023-01-17"),
+	createData(17, "Refresh Materialized Views", "Refresh all materialized views in the reporting DB", "InProgress", "2023-01-05", "2023-01-12"),
+	createData(18, "User Engagement Analysis", "Analyze user engagement for the new feature", "PendingExecution", "2022-12-31", "2023-01-01"),
+	createData(19, "Fix Duplicate Records", "Identify and fix all duplicate records in user table", "Failed", "2022-12-25", "2022-12-26"),
+	createData(20, "Optimize Image Storage", "Compress and optimize stored images", "AwaitingTrigger", "2022-12-20", "2022-12-27"),
 ]
 
 const headCells = [
@@ -68,31 +69,31 @@ const headCells = [
 		id: "name",
 		numeric: false,
 		disablePadding: false,
-		label: "Database Name",
+		label: "Name",
 	},
 	{
-		id: "type",
+		id: "description",
 		numeric: false,
 		disablePadding: false,
-		label: "Type",
+		label: "Description",
 	},
 	{
 		id: "status",
 		numeric: false,
 		disablePadding: false,
-		label: "Connection Status",
+		label: "Query Status",
 	},
 	{
-		id: "host",
+		id: "create_date",
 		numeric: false,
 		disablePadding: false,
-		label: "Host",
+		label: "Create Date",
 	},
 	{
-		id: "port",
-		numeric: true,
+		id: "modified_date",
+		numeric: false,
 		disablePadding: false,
-		label: "Port",
+		label: "Modified Date",
 	},
 ]
 
@@ -112,7 +113,7 @@ function EnhancedTableHead(props) {
 						checked={rowCount > 0 && numSelected === rowCount}
 						onChange={onSelectAllClick}
 						inputProps={{
-							"aria-label": "select all databases",
+							"aria-label": "select all queries",
 						}}
 					/>
 				</TableCell>
@@ -170,7 +171,7 @@ function EnhancedTableToolbar(props) {
 				</Typography>
 			) : (
 				<Typography sx={{ flex: "1 1 100%" }} variant="h6" id="tableTitle" component="div">
-					Connected Databases
+					Created Queries
 				</Typography>
 			)}
 
@@ -204,8 +205,8 @@ export default function DatabaseTable() {
 	const [searchTerm, setSearchTerm] = React.useState("")
 	const navigate = useNavigate()
 
-	const handleNameClick = (databaseId) => {
-		navigate(`/dashboard/databases/${databaseId}`)
+	const handleNameClick = (queryId) => {
+		navigate(`/dashboard/queries/${queryId}`)
 	}
 
 	// Filter rows based on search term
@@ -267,11 +268,11 @@ export default function DatabaseTable() {
 	return (
 		<Box sx={{ width: "100%" }}>
 			<Grid container justifyContent="space-between" alignItems="center" mb={2} spacing={2}>
-				<Grid item xs={12} md={8}>
+				<Grid item xs={12} md={10}>
 					<Paper component="form" sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: "100%" }}>
 						<InputBase
 							sx={{ ml: 1, flex: 1 }}
-							placeholder="Search Databases"
+							placeholder="Search Queries"
 							inputProps={{ "aria-label": "search databases" }}
 							value={searchTerm}
 							onChange={handleSearch} // Set up search handling
@@ -281,14 +282,9 @@ export default function DatabaseTable() {
 						</IconButton>
 					</Paper>
 				</Grid>
-				<Grid item xs={6} sm={6} md={2}>
+				<Grid item xs={12} md={2}>
 					<Button variant="contained" startIcon={<AddIcon />} sx={{ fontSize: "0.875rem", width: "100%", height: 48 }}>
-						Add Connection
-					</Button>
-				</Grid>
-				<Grid item xs={6} sm={6} md={2}>
-					<Button variant="contained" startIcon={<AddIcon />} sx={{ fontSize: "0.875rem", width: "100%", height: 48 }}>
-						Create Database
+						Create Query
 					</Button>
 				</Grid>
 			</Grid>
@@ -331,12 +327,12 @@ export default function DatabaseTable() {
 										<TableCell component="th" scope="row" onClick={() => handleNameClick(row.id)}>
 											{row.name}
 										</TableCell>
-										<TableCell align="left">{row.type}</TableCell>
+										<TableCell align="left">{row.description}</TableCell>
 										<TableCell align="left">
-											<DatabaseStatusIndicator status={row.status} />
+											<QueryStatusIndicator status={row.status} />
 										</TableCell>
-										<TableCell align="left">{row.host}</TableCell>
-										<TableCell align="left">{row.port}</TableCell>
+										<TableCell align="left">{row.create_date}</TableCell>
+										<TableCell align="left">{row.modified_date}</TableCell>
 									</TableRow>
 								)
 							})}

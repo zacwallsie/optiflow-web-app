@@ -29,7 +29,6 @@ const RootStyle = styled(AppBar, {
 	...cssStyles(theme).bgBlur(),
 	boxShadow: "none",
 	height: HEADER.MOBILE_HEIGHT,
-	zIndex: theme.zIndex.appBar + 1,
 	transition: theme.transitions.create(["width", "height"], {
 		duration: theme.transitions.duration.shorter,
 	}),
@@ -71,11 +70,10 @@ export default function DashboardHeader({ onOpenSidebar, isCollapse = false, ver
 	}, [])
 
 	return (
-		<RootStyle isCollapse={isCollapse} isOffset={isOffset} verticalLayout={verticalLayout}>
+		<RootStyle isCollapse={isCollapse} isOffset={false} verticalLayout={verticalLayout}>
 			<Toolbar
 				sx={{
 					minHeight: "100% !important",
-					px: { lg: 5 },
 					backgroundColor: "tertiary.light",
 				}}
 			>

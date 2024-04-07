@@ -9,7 +9,7 @@ import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs"
 // sections
 import { QueryExecutor, DatabaseConfigurationEditor, DatabaseManagement, DatabaseOverview } from "../../../sections/@databases/@databases_view/index"
 
-export default function DatabasesView() {
+export default function DatabaseView() {
 	const { databaseId } = useParams() // Extract the databaseId from URL
 	const [databaseDetails, setDatabaseDetails] = useState({
 		name: "Sample Database",
@@ -40,7 +40,7 @@ export default function DatabasesView() {
 		<Page title={databaseDetails.name || "OptiFlow"}>
 			<Container maxWidth="lg">
 				<HeaderBreadcrumbs
-					heading={databaseDetails.name || "Databases"}
+					heading={databaseDetails.name || "Database"}
 					links={[
 						{ name: "Databases", href: PATH_DASHBOARD.general.databases },
 						...(databaseDetails.name ? [{ name: databaseDetails.name, href: "", isActive: true }] : []),

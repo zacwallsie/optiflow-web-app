@@ -13,7 +13,7 @@ import { DatabaseTable } from "../../sections/@databases/index"
 export default function DatabasesPage() {
 	return (
 		<Page title="OptiFlow">
-			<Container maxWidth={"lg"}>
+			<Container maxWidth={"false"}>
 				<HeaderBreadcrumbs heading="Databases" links={[{ name: "Databases", href: PATH_DASHBOARD.databases }]} />
 				<DatabaseTable />
 			</Container>

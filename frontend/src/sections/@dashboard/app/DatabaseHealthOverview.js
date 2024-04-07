@@ -20,7 +20,7 @@ export default function DatabaseHealthOverview() {
 
 	return (
 		<div>
-			<h2>Database Health Overview</h2>
+			<h2>Database Health</h2>
 			<Pie data={data} />
 		</div>
 	)

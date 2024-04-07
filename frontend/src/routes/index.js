@@ -66,6 +66,7 @@ export default function Router() {
 				{ element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
 				{ path: "app", element: <GeneralApp /> },
 				{ path: "queries", element: <QueriesPage /> },
+				{ path: "queries/:queryId", element: <QueryView /> },
 				{ path: "databases", element: <DatabasesPage /> },
 				{ path: "databases/:databaseId", element: <DatabaseView /> },
 				{
@@ -110,6 +111,7 @@ const GeneralApp = Loadable(lazy(() => import("../pages/dashboard/GeneralApp")))
 const DatabasesPage = Loadable(lazy(() => import("../pages/databases/DatabasesPage")))
 const DatabaseView = Loadable(lazy(() => import("../pages/databases/database_view/DatabaseView")))
 const QueriesPage = Loadable(lazy(() => import("../pages/queries/QueriesPage")))
+const QueryView = Loadable(lazy(() => import("../pages/queries/queries_view/QueryView")))
 
 const Page500 = Loadable(lazy(() => import("../pages/Page500")))
 const Page403 = Loadable(lazy(() => import("../pages/Page403")))

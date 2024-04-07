@@ -1,47 +1,72 @@
-import React, { useCallback } from "react"
-import ReactFlow, { MiniMap, Controls, Background, useNodesState, useEdgesState, addEdge } from "reactflow"
+import React, { useEffect, useState } from "react"
+import { Container, Grid, Box } from "@mui/material"
+import { useParams } from "react-router-dom"
 
-import "reactflow/dist/style.css"
+import { PATH_DASHBOARD } from "../../../routes/paths"
+import Page from "../../../components/Page"
+import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs"
 
-import { Container, Tab, Box, Tabs } from "@mui/material"
+// sections
+import { QueryBuilder, NodePopupForm, ToolAdderSidebar } from "../../../sections/@queries/@queries_view/index"
 
-// routes
-import { PATH_DASHBOARD } from "../../routes/paths"
+export default function QueryView() {
+	const { queryId } = useParams() // Extract the queryId from URL
+	const [queryDetails, setQueryDetails] = useState({
+		name: "Sample Query",
+		type: "Sample query descriptions",
+		status: "Paused",
+		create_date: "2022-12-20",
+		modified_date: "2022-12-20",
+	})
 
-// components
-import Page from "../../components/Page"
-import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs"
-
-const initialNodes = [
-	{ id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
-	{ id: "2", position: { x: 0, y: 100 }, data: { label: "2" } },
-]
-const initialEdges = [{ id: "e1-2", source: "1", target: "2" }]
-
-const proOptions = { hideAttribution: true }
-
-export default function QueriesPage() {
-	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
-	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
-
-	const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges])
+	useEffect(() => {
+		// Simulate fetching query details
+	}, [queryId])
 
 	return (
-		<div style={{ width: "50vw", height: "50vh" }}>
-			<ReactFlow
-				proOptions={proOptions}
-				fitView
-				nodes={nodes}
-				edges={edges}
-				onNodesChange={onNodesChange}
-				onEdgesChange={onEdgesChange}
-				onConnect={onConnect}
-			>
-				<Controls />
-				<MiniMap />
+		<Page title={"OptiFlow - Queries"}>
+			<Container maxWidth="false" sx={{ p: 0, m: 0 }}>
+				<HeaderBreadcrumbs
+					heading={queryDetails.name || "Query"}
+					links={[
+						{ name: "Queries", href: PATH_DASHBOARD.general.queries },
+						...(queryDetails.name ? [{ name: queryDetails.name, href: "", isActive: true }] : []),
+					]}
+				/>
+				<Grid container spacing={3}>
+					{/* Main Query Builder Section */}
+					<Grid item xs={12} md={9} lg={9}>
+						<Box
+							sx={{
+								height: "calc(100vh - 200px)", // Adjust height as needed
+								border: "1px solid #ddd", // Just for visibility
+								borderRadius: 2,
+							}}
+						>
+							<QueryBuilder details={queryDetails} />
+						</Box>
+					</Grid>
 
-				<Background variant="dots" gap={12} size={1} />
-			</ReactFlow>
-		</div>
+					{/* Tool Adder Sidebar */}
+					<Grid item xs={12} md={3} lg={3}>
+						<Box
+							sx={{
+								height: "calc(100vh - 200px)", // Adjust height as needed
+								overflowY: "auto", // Scroll for overflow content
+								border: "1px solid #ddd", // Just for visibility
+								borderRadius: 2,
+								padding: 2,
+							}}
+						>
+							<ToolAdderSidebar />
+						</Box>
+					</Grid>
+				</Grid>
+
+				{/* Node Popup Form (assumed to be a modal or similar that can be triggered from QueryBuilder) */}
+				{/* Make sure NodePopupForm is conditionally rendered or manages its visibility internally */}
+				<NodePopupForm />
+			</Container>
+		</Page>
 	)
 }
