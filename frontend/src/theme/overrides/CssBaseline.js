@@ -4,10 +4,6 @@ export default function CssBaseline() {
 	return {
 		MuiCssBaseline: {
 			styleOverrides: {
-				// Hide scrollbar for body and html
-				"html, body": {
-					overflow: "hidden", // Hide the main scrollbar
-				},
 				// Apply custom scrollbar styles specifically to elements that can scroll
 				"*": {
 					// Resetting box sizing, margins, and paddings
@@ -17,8 +13,8 @@ export default function CssBaseline() {
 				},
 				// Target all possible scrollable areas except for html and body
 				"*:not(html, body)": {
-					"scrollbar-width": "thin", // For Firefox
-					"scrollbar-color": "#192021 #121617", // For Firefox, using paper for thumb and default for track
+					scrollbarWidth: "thin", // For Firefox
+					scrollbarColor: "#192021 #121617", // For Firefox, using paper for thumb and default for track
 				},
 				"*:not(html, body)::-webkit-scrollbar": {
 					width: "8px", // Scrollbar width

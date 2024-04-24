@@ -5,7 +5,7 @@ function path(root, sublink) {
 }
 
 const ROOTS_AUTH = "/auth"
-const ROOTS_DASHBOARD = "/dashboard"
+const ROOTS_DASHBOARD = "/flow"
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +29,6 @@ export const PATH_PAGE = {
 export const PATH_DASHBOARD = {
 	root: ROOTS_DASHBOARD,
 	general: {
-		app: path(ROOTS_DASHBOARD, "/app"),
 		databases: path(ROOTS_DASHBOARD, "/databases"),
 		queries: path(ROOTS_DASHBOARD, "/queries"),
 	},
@@ -37,8 +36,6 @@ export const PATH_DASHBOARD = {
 	permissionDenied: path(ROOTS_DASHBOARD, "/permission-denied"),
 	user: {
 		root: path(ROOTS_DASHBOARD, "/user"),
-
-		profile: path(ROOTS_DASHBOARD, "/user/profile"),
 		account: path(ROOTS_DASHBOARD, "/user/account"),
 	},
 }

@@ -24,16 +24,16 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
-admin.site.site_header = "Project Header"
-admin.site.site_title = "Project Title"
-admin.site.index_title = "Welcome Message"
+admin.site.site_header = "OptiFlow Admin Panel"
+admin.site.site_title = "OptiFlow Admin Panel"
+admin.site.index_title = "Welcome to OptiFlow Admin Panel"
 
 
 schema_url_patterns = []
 
 schema_view = get_schema_view(
-    title="API Title",
-    url="https://www.example.com/",
+    title="OptiFlow API",
+    url="https://optiflow.api.com.au/",
     patterns=schema_url_patterns,
 )
 
@@ -55,6 +55,7 @@ urlpatterns = [
         name="swagger-ui",
     ),
     path("api/v1/accounts/", include("accounts.urls")),
+    path("api/v1/databases/", include("databases.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -13,17 +13,12 @@ import useIsMountedRef from "../../../hooks/useIsMountedRef"
 // components
 import MenuPopover from "../../../components/MenuPopover"
 import { IconButtonAnimate } from "../../../components/animate"
-import Iconify from "../../../components/Iconify"
 // assets
 import { OptiFlowLogo } from "../../../assets"
 
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
-	{
-		label: "Dashboard",
-		linkTo: "/dashboard/app",
-	},
 	{
 		label: "Settings",
 		linkTo: PATH_DASHBOARD.user.account,
@@ -88,7 +83,7 @@ export default function AccountPopover({ user }) {
 					}),
 				}}
 			>
-				<OptiFlowLogo width={45} height={45} />
+				<OptiFlowLogo width={40} height={40} />
 			</IconButtonAnimate>
 
 			<MenuPopover

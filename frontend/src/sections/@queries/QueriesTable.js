@@ -206,7 +206,7 @@ export default function DatabaseTable() {
 	const navigate = useNavigate()
 
 	const handleNameClick = (queryId) => {
-		navigate(`/dashboard/queries/${queryId}`)
+		navigate(`/flow/queries/${queryId}`)
 	}
 
 	// Filter rows based on search term

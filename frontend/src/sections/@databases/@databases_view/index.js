@@ -2,3 +2,5 @@ export { default as DatabaseConfigurationEditor } from "./DatabaseConfigurationE
 export { default as DatabaseManagement } from "./DatabaseManagement"
 export { default as DatabaseOverview } from "./DatabaseOverview"
 export { default as QueryExecutor } from "./QueryExecutor"
+export { default as TableViewer } from "./TableViewer"
+export { default as TableDataViewer } from "./TableDataViewer"

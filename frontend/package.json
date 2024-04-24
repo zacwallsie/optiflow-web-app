@@ -82,6 +82,7 @@
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "mapbox-gl": "^2.9.1",
+    "nanoid": "^5.0.6",
     "notistack": "^2.0.5",
     "nprogress": "^0.2.0",
     "numeral": "^2.0.6",
@@ -111,6 +112,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.0",
     "react-slick": "^0.29.0",
+    "react-table": "^7.8.0",
     "reactflow": "^11.10.4",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
@@ -121,9 +123,11 @@
     "stream-browserify": "^3.0.0",
     "stylis": "^4.1.1",
     "stylis-plugin-rtl": "^2.1.1",
+    "twind": "^0.16.19",
     "util": "^0.12.4",
     "web-vitals": "^2.1.4",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",

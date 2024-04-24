@@ -42,7 +42,7 @@ export default function Page500() {
 						<SeverErrorIllustration sx={{ height: 260, my: { xs: 5, sm: 10 } }} />
 					</m.div>
 
-					<Button to="/dashboard/app" size="large" variant="contained" component={RouterLink}>
+					<Button to="/flow/queries" size="large" variant="contained" component={RouterLink}>
 						Go to Home
 					</Button>
 				</ContentStyle>

@@ -28,6 +28,8 @@ import InputBase from "@mui/material/InputBase"
 import { useNavigate } from "react-router-dom"
 // section utils
 import { DatabaseStatusIndicator, stableSort, getComparator } from "../section_utils/index"
+// components
+import CreateDatabaseForm from "./CreateDatabaseForm"
 
 function createData(id, name, type, status, host, port) {
 	return {
@@ -204,8 +206,18 @@ export default function DatabaseTable() {
 	const [searchTerm, setSearchTerm] = React.useState("")
 	const navigate = useNavigate()
 
+	const [open, setAddDbOpen] = React.useState(false)
+
+	const handleAddDbOpen = () => {
+		setAddDbOpen(true)
+	}
+
+	const handleAddDbClose = () => {
+		setAddDbOpen(false)
+	}
+
 	const handleNameClick = (databaseId) => {
-		navigate(`/dashboard/databases/${databaseId}`)
+		navigate(`/flow/databases/${databaseId}`)
 	}
 
 	// Filter rows based on search term
@@ -267,7 +279,7 @@ export default function DatabaseTable() {
 	return (
 		<Box sx={{ width: "100%" }}>
 			<Grid container justifyContent="space-between" alignItems="center" mb={2} spacing={2}>
-				<Grid item xs={12} md={8}>
+				<Grid item xs={12} md={9}>
 					<Paper component="form" sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: "100%" }}>
 						<InputBase
 							sx={{ ml: 1, flex: 1 }}
@@ -281,17 +293,18 @@ export default function DatabaseTable() {
 						</IconButton>
 					</Paper>
 				</Grid>
-				<Grid item xs={6} sm={6} md={2}>
-					<Button variant="contained" startIcon={<AddIcon />} sx={{ fontSize: "0.875rem", width: "100%", height: 48 }}>
-						Add Connection
-					</Button>
-				</Grid>
-				<Grid item xs={6} sm={6} md={2}>
-					<Button variant="contained" startIcon={<AddIcon />} sx={{ fontSize: "0.875rem", width: "100%", height: 48 }}>
+				<Grid item xs={12} sm={12} md={3}>
+					<Button
+						variant="contained"
+						startIcon={<AddIcon />}
+						sx={{ fontSize: "0.875rem", width: "100%", height: 48 }}
+						onClick={handleAddDbOpen}
+					>
 						Create Database
 					</Button>
 				</Grid>
 			</Grid>
+			<CreateDatabaseForm open={open} onClose={handleAddDbClose} />
 			<Paper sx={{ width: "100%", mb: 2 }}>
 				<EnhancedTableToolbar numSelected={selected.length} />
 				<TableContainer>

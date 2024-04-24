@@ -9,8 +9,8 @@ import useCollapseDrawer from "../../hooks/useCollapseDrawer"
 // config
 import { HEADER, NAVBAR } from "../../config"
 //
-import DashboardHeader from "./header"
-import NavbarVertical from "./navbar/NavbarVertical"
+import DashboardHeader from "./header/DashboardHeader"
+import NavbarVertical from "./navbar/NavBar"
 
 // ----------------------------------------------------------------------
 
@@ -21,8 +21,8 @@ const MainStyle = styled("main", {
 	paddingTop: HEADER.MOBILE_HEIGHT + 24,
 	paddingBottom: HEADER.MOBILE_HEIGHT + 24,
 	[theme.breakpoints.up("lg")]: {
-		paddingLeft: 16,
-		paddingRight: 16,
+		paddingLeft: 8,
+		paddingRight: 8,
 		paddingTop: HEADER.DASHBOARD_DESKTOP_HEIGHT + 24,
 		paddingBottom: HEADER.DASHBOARD_DESKTOP_HEIGHT + 24,
 		width: `calc(100% - ${NAVBAR.DASHBOARD_WIDTH}px)`,
@@ -50,10 +50,8 @@ export default function DashboardLayout() {
 			}}
 		>
 			<DashboardHeader isCollapse={isCollapse} onOpenSidebar={() => setOpen(true)} />
-
 			<NavbarVertical isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
-
-			<MainStyle collapseClick={collapseClick}>
+			<MainStyle collapseClick={collapseClick} style={{ paddingLeft: 0, paddingRight: 0, ml: 0, mr: 0 }}>
 				<Outlet />
 			</MainStyle>
 		</Box>

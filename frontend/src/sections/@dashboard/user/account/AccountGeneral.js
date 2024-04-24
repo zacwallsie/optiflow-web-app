@@ -67,28 +67,11 @@ export default function AccountGeneral() {
 								display: "grid",
 								rowGap: 3,
 								columnGap: 2,
-								gridTemplateColumns: { xs: "repeat(1, 1fr)", sm: "repeat(2, 1fr)" },
+								gridTemplateColumns: { xs: "repeat(1, 1fr)" },
 							}}
 						>
-							<RHFTextField name="displayName" label="Name" />
+							<RHFTextField name="displayName" label="Full Name" />
 							<RHFTextField name="email" label="Email Address" />
-
-							<RHFTextField name="phoneNumber" label="Phone Number" />
-							<RHFTextField name="address" label="Address" />
-
-							<RHFSelect name="country" label="Country" placeholder="Country">
-								<option value="" />
-								{countries.map((option) => (
-									<option key={option.code} value={option.label}>
-										{option.label}
-									</option>
-								))}
-							</RHFSelect>
-
-							<RHFTextField name="state" label="State/Region" />
-
-							<RHFTextField name="city" label="City" />
-							<RHFTextField name="zipCode" label="Zip/Code" />
 						</Box>
 
 						<Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>

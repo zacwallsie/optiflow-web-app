@@ -7,7 +7,14 @@ import Page from "../../../components/Page"
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs"
 
 // sections
-import { QueryExecutor, DatabaseConfigurationEditor, DatabaseManagement, DatabaseOverview } from "../../../sections/@databases/@databases_view/index"
+import {
+	TableDataViewer,
+	TableViewer,
+	QueryExecutor,
+	DatabaseConfigurationEditor,
+	DatabaseManagement,
+	DatabaseOverview,
+} from "../../../sections/@databases/@databases_view/index"
 
 export default function DatabaseView() {
 	const { databaseId } = useParams() // Extract the databaseId from URL
@@ -38,7 +45,7 @@ export default function DatabaseView() {
 
 	return (
 		<Page title={databaseDetails.name || "OptiFlow"}>
-			<Container maxWidth="lg">
+			<Container maxWidth="false">
 				<HeaderBreadcrumbs
 					heading={databaseDetails.name || "Database"}
 					links={[
@@ -47,26 +54,29 @@ export default function DatabaseView() {
 					]}
 				/>
 				<Grid container spacing={3}>
-					<Grid item xs={12} lg={6}>
-						<DatabaseOverview details={databaseDetails} />
+					<Grid item xs={10} sx={{ height: "100%" }}>
+						<Grid container spacing={3}>
+							{/* Top Left - Database Overview */}
+							<Grid item xs={4}>
+								<DatabaseOverview details={databaseDetails} />
+							</Grid>
+
+							{/* Top Middle - Database Configuration */}
+							<Grid item xs={8}>
+								<DatabaseConfigurationEditor config={config} onSave={() => {}} />
+							</Grid>
+
+							{/* Bottom left remaining cells - DataTable */}
+							<Grid item xs={12}>
+								<TableDataViewer />
+							</Grid>
+						</Grid>
 					</Grid>
-					<Grid item xs={12} lg={6}>
-						<DatabaseConfigurationEditor
-							config={config}
-							onSave={() => {
-								/* Implement save logic */
-							}}
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<DatabaseManagement tables={tables} />
-					</Grid>
-					<Grid item xs={12}>
-						<QueryExecutor
-							onExecute={(query) => {
-								/* Implement query execution logic */
-							}}
-						/>
+
+					{/* Right 3 cells - TableViewer */}
+					<Grid item xs={2}>
+						{/* Adjust the height as per your header/navbar height */}
+						<TableViewer />
 					</Grid>
 				</Grid>
 			</Container>

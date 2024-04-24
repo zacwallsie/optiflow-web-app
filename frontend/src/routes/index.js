@@ -56,7 +56,7 @@ export default function Router() {
 
 		// Dashboard Routes
 		{
-			path: "dashboard",
+			path: "flow",
 			element: (
 				<AuthGuard>
 					<DashboardLayout />
@@ -64,7 +64,6 @@ export default function Router() {
 			),
 			children: [
 				{ element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
-				{ path: "app", element: <GeneralApp /> },
 				{ path: "queries", element: <QueriesPage /> },
 				{ path: "queries/:queryId", element: <QueryView /> },
 				{ path: "databases", element: <DatabasesPage /> },
@@ -72,8 +71,7 @@ export default function Router() {
 				{
 					path: "user",
 					children: [
-						{ element: <Navigate to="/dashboard/user/profile" replace />, index: true },
-						{ path: "profile", element: <UserProfile /> },
+						{ element: <Navigate to="/flow/user/profile" replace />, index: true },
 						{ path: "account", element: <UserAccount /> },
 					],
 				},
@@ -103,11 +101,9 @@ const ResetPassword = Loadable(lazy(() => import("../pages/auth/ResetPassword"))
 const NewPassword = Loadable(lazy(() => import("../pages/auth/NewPassword")))
 const VerifyCode = Loadable(lazy(() => import("../pages/auth/VerifyCode")))
 
-const UserProfile = Loadable(lazy(() => import("../pages/dashboard/UserProfile")))
-const UserAccount = Loadable(lazy(() => import("../pages/dashboard/UserAccount")))
+const UserAccount = Loadable(lazy(() => import("../pages/user_account/UserAccount")))
 
 // GENERAL
-const GeneralApp = Loadable(lazy(() => import("../pages/dashboard/GeneralApp")))
 const DatabasesPage = Loadable(lazy(() => import("../pages/databases/DatabasesPage")))
 const DatabaseView = Loadable(lazy(() => import("../pages/databases/database_view/DatabaseView")))
 const QueriesPage = Loadable(lazy(() => import("../pages/queries/QueriesPage")))

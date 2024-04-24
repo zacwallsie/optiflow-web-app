@@ -5,7 +5,7 @@ export default function DatabaseConfigurationEditor({ config, onSave }) {
 	// and `onSave` is a function to save the edited configuration
 
 	return (
-		<Paper sx={{ p: 2 }}>
+		<Paper sx={{ p: 2, height: "100%" }}>
 			<Grid container spacing={2}>
 				{Object.keys(config).map((key) => (
 					<Grid item xs={12} sm={6} key={key}>
