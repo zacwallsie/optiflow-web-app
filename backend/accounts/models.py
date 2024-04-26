@@ -55,7 +55,6 @@ class User(AbstractUser):
     id = models.UUIDField(
         primary_key=True, unique=True, default=uuid.uuid4, editable=False
     )
-    avatar = models.ImageField(upload_to=image_name_and_path, blank=True, null=True)
     name = models.CharField(max_length=160)
     email = models.EmailField(_("email address"), unique=True)
 

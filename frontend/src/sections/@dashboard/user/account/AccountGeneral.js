@@ -30,12 +30,6 @@ export default function AccountGeneral() {
 	const defaultValues = {
 		displayName: user?.displayName || "",
 		email: user?.email || "",
-		phoneNumber: user?.phoneNumber || "",
-		country: user?.country || "",
-		address: user?.address || "",
-		state: user?.state || "",
-		city: user?.city || "",
-		zipCode: user?.zipCode || "",
 	}
 
 	const methods = useForm({

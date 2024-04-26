@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 import { m } from "framer-motion"
 // @mui
 import { alpha, styled } from "@mui/material/styles"
-import { Box, Typography } from "@mui/material"
+import { Box } from "@mui/material"
 //
 import Logo from "./Logo"
 import ProgressBar from "./ProgressBar"
@@ -64,34 +64,31 @@ export default function LoadingScreen({ isDashboard, ...other }) {
 							height: 100,
 							borderRadius: "25%",
 							position: "absolute",
-							border: (theme) => `solid 3px ${alpha(theme.palette.primary.main, 0.24)}`,
+							border: (theme) => `solid 3px ${alpha(theme.palette.primary.dark, 0.24)}`,
 						}}
 					/>
 
-					{/* Add visual element suggesting nodes and data flow */}
-					<Typography
+					<Box
 						component={m.div}
 						animate={{
-							pathLength: [0, 1, 1, 0, 0],
-							opacity: [0, 0.5, 0.5, 0.5, 0],
+							scale: [1, 1.2, 1.2, 1, 1],
+							rotate: [0, 270, 270, 0, 0],
+							opacity: [1, 0.25, 0.25, 0.25, 1],
+							borderRadius: ["25%", "25%", "50%", "50%", "25%"],
 						}}
 						transition={{
-							duration: 2,
-							ease: "easeInOut",
-							repeatDelay: 1,
+							ease: "linear",
+							duration: 3.2,
 							repeat: Infinity,
 						}}
 						sx={{
+							width: 120,
+							height: 120,
+							borderRadius: "25%",
 							position: "absolute",
-							width: "100%",
-							height: "100%",
-							display: "flex",
-							justifyContent: "center",
-							alignItems: "center",
+							border: (theme) => `solid 8px ${alpha(theme.palette.primary.dark, 0.24)}`,
 						}}
-					>
-						Connecting Data...
-					</Typography>
+					/>
 				</RootStyle>
 			)}
 		</>

@@ -54,10 +54,12 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "rest_framework",
     "drf_spectacular",
+    "rest_framework_simplejwt",
 ]
 
 LOCAL_APPS = [
     "accounts.apps.AccountsConfig",
+    "databases.apps.DatabasesConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -167,10 +169,10 @@ REST_FRAMEWORK = {
 }
 
 
-DESCRIPTION = f"Django Rest API"
+DESCRIPTION = f"OptiFlow Rest API"
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Django Rest API",
+    "TITLE": "OptiFlow Rest API",
     "DESCRIPTION": DESCRIPTION,
     "VERSION": "1.0",
     "SERVE_INCLUDE_SCHEMA": False,
@@ -181,7 +183,7 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": True,
-    "UPDATE_LAST_LOGIN": False,
+    "UPDATE_LAST_LOGIN": True,
     "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,
     "VERIFYING_KEY": None,

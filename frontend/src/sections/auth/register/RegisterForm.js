@@ -25,12 +25,16 @@ export default function RegisterForm() {
 	const RegisterSchema = Yup.object().shape({
 		userName: Yup.string().required("Name required"),
 		email: Yup.string().email("Email must be a valid email address").required("Email is required"),
-		password: Yup.string().required("Password is required"),
+		password: Yup.string()
+			.min(8, "Password must be at least 8 characters long")
+			.matches(/\d/, "Password must contain a number, a letter and a special character")
+			.matches(/[a-zA-Z]/, "Password must contain a number, a letter and a special character")
+			.matches(/[!@#$%^&*(),.?":{}|<>]/, "Password must contain a number, a letter and a special character")
+			.required("Password is required"),
 	})
 
 	const defaultValues = {
 		userName: "",
-		lastName: "",
 		email: "",
 		password: "",
 	}
@@ -49,12 +53,11 @@ export default function RegisterForm() {
 
 	const onSubmit = async (data) => {
 		try {
-			await register(data.email, data.password, data.firstName, data.lastName)
+			await register(data.userName, data.email, data.password)
 		} catch (error) {
-			console.error(error)
 			reset()
 			if (isMountedRef.current) {
-				setError("afterSubmit", { ...error, message: error.message })
+				setError("afterSubmit", { ...error, message: error.detail })
 			}
 		}
 	}

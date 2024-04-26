@@ -15,8 +15,6 @@ import { NAVBAR } from "../../../config"
 // utils
 import cssStyles from "../../../utils/cssStyles"
 import { matchPath } from "react-router-dom"
-// hooks
-import useLocales from "../../../hooks/useLocales"
 // guards
 import RoleBasedGuard from "../../../guards/RoleBasedGuard"
 import Iconify from "../../../components/Iconify"
@@ -83,8 +81,6 @@ NavItem.propTypes = {
 }
 
 function NavItem({ item, depth, active, open, isCollapse, ...other }) {
-	const { translate } = useLocales()
-
 	const { title, icon, info, children, disabled, caption, roles } = item
 
 	const renderContent = (
@@ -95,11 +91,11 @@ function NavItem({ item, depth, active, open, isCollapse, ...other }) {
 
 			<ListItemTextStyle
 				isCollapse={isCollapse}
-				primary={translate(title)}
+				primary={title}
 				secondary={
 					caption && (
-						<Tooltip title={translate(caption)} placement="top-start">
-							<span>{translate(caption)}</span>
+						<Tooltip title={caption} placement="top-start">
+							<span>{caption}</span>
 						</Tooltip>
 					)
 				}

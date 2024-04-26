@@ -10,13 +10,17 @@ from .models import User
 class CustomUserAdmin(UserAdmin):
     """Define admin model for custom User model with no username field."""
 
+    exclude = (
+        "first_name",
+        "last_name",
+    )
+
     fieldsets = (
         (
             None,
             {
                 "fields": (
                     "name",
-                    "avatar",
                     "email",
                 )
             },
