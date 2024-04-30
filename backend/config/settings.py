@@ -8,9 +8,12 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 from datetime import timedelta
 from django.core.management.utils import get_random_secret_key
+
+load_dotenv()
 
 DB_HOST = os.environ.get("DB_HOST")
 DB_NAME = os.environ.get("DB_NAME")
@@ -59,7 +62,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "accounts.apps.AccountsConfig",
-    "databases.apps.DatabasesConfig",
+    "silos.apps.SilosConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

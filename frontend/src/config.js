@@ -49,19 +49,6 @@ export const ICON = {
 	NAVBAR_ITEM_HORIZONTAL: 24,
 }
 
-// SETTINGS
-// Please remove `localStorage` when you change settings.
-// ----------------------------------------------------------------------
-
-export const defaultSettings = {
-	themeMode: "dark",
-	themeDirection: "ltr",
-	themeContrast: "default",
-	themeLayout: "vertical",
-	themeColorPresets: "default",
-	themeStretch: false,
-}
-
 // MULTI LANGUAGES
 // Please remove `localStorage` when you change settings.
 // ----------------------------------------------------------------------

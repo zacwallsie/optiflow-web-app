@@ -1,5 +1,6 @@
 import * as React from "react"
 import PropTypes from "prop-types"
+import axios from "../../utils/axios"
 import { alpha } from "@mui/material/styles"
 import Box from "@mui/material/Box"
 import Table from "@mui/material/Table"
@@ -27,74 +28,22 @@ import SearchIcon from "@mui/icons-material/Search"
 import InputBase from "@mui/material/InputBase"
 import { useNavigate } from "react-router-dom"
 // section utils
-import { DatabaseStatusIndicator, stableSort, getComparator } from "../section_utils/index"
+import { stableSort, getComparator } from "../section_utils/index"
 // components
 import CreateDatabaseForm from "./CreateDatabaseForm"
 
-function createData(id, name, type, status, host, port) {
-	return {
-		id,
-		name,
-		type,
-		status,
-		host,
-		port,
-	}
-}
-
-const rows = [
-	createData(1, "Prod DB", "MySQL", "Active", "prod-db.example.com", 3306),
-	createData(2, "Test DB", "PostgreSQL", "Idle", "test-db.example.com", 5432),
-	createData(3, "Dev DB", "MongoDB", "Disconnected", "dev-db.example.com", 27017),
-	createData(4, "Analytics DB", "Redis", "Active", "analytics-db.example.com", 6379),
-	createData(5, "Backup DB", "SQLite", "Idle", "backup-db.example.com", 0),
-	createData(6, "Staging DB", "MySQL", "Active", "staging-db.example.com", 3306),
-	createData(7, "Logs DB", "Elasticsearch", "Active", "logs-db.example.com", 9200),
-	createData(8, "Archive DB", "PostgreSQL", "Idle", "archive-db.example.com", 5432),
-	createData(9, "Cache DB", "Redis", "Disconnected", "cache-db.example.com", 6379),
-	createData(10, "Session DB", "MongoDB", "Active", "session-db.example.com", 27017),
-	createData(11, "Marketing DB", "Neo4j", "Active", "marketing-db.example.com", 7474),
-	createData(12, "HR DB", "Oracle", "Idle", "hr-db.example.com", 1521),
-	createData(13, "Sales DB", "DynamoDB", "Active", "sales-db.example.com", 8000),
-	createData(14, "Customer Support DB", "Cassandra", "Disconnected", "support-db.example.com", 9042),
-	createData(15, "Research DB", "MariaDB", "Idle", "research-db.example.com", 3306),
-	createData(16, "Financial DB", "SQL Server", "Active", "financial-db.example.com", 1433),
-	createData(17, "Product DB", "Couchbase", "Disconnected", "product-db.example.com", 8091),
-	createData(18, "Development DB", "PostgreSQL", "Active", "dev-db.example.com", 5432),
-	createData(19, "Testing DB", "MySQL", "Idle", "testing-db.example.com", 3306),
-	createData(20, "Operations DB", "SQLite", "Active", "operations-db.example.com", 0),
-]
-
 const headCells = [
 	{
-		id: "name",
+		id: "schema_name",
 		numeric: false,
 		disablePadding: false,
-		label: "Database Name",
+		label: "Silo Name",
 	},
 	{
-		id: "type",
+		id: "created_at",
 		numeric: false,
 		disablePadding: false,
-		label: "Type",
-	},
-	{
-		id: "status",
-		numeric: false,
-		disablePadding: false,
-		label: "Connection Status",
-	},
-	{
-		id: "host",
-		numeric: false,
-		disablePadding: false,
-		label: "Host",
-	},
-	{
-		id: "port",
-		numeric: true,
-		disablePadding: false,
-		label: "Port",
+		label: "Created At",
 	},
 ]
 
@@ -114,7 +63,7 @@ function EnhancedTableHead(props) {
 						checked={rowCount > 0 && numSelected === rowCount}
 						onChange={onSelectAllClick}
 						inputProps={{
-							"aria-label": "select all databases",
+							"aria-label": "select all silos",
 						}}
 					/>
 				</TableCell>
@@ -198,8 +147,9 @@ EnhancedTableToolbar.propTypes = {
 }
 
 export default function DatabaseTable() {
+	const [schemas, setSchemas] = React.useState([])
 	const [order, setOrder] = React.useState("asc")
-	const [orderBy, setOrderBy] = React.useState("calories")
+	const [orderBy, setOrderBy] = React.useState("name")
 	const [selected, setSelected] = React.useState([])
 	const [page, setPage] = React.useState(0)
 	const [rowsPerPage, setRowsPerPage] = React.useState(10)
@@ -215,6 +165,21 @@ export default function DatabaseTable() {
 	const handleAddDbClose = () => {
 		setAddDbOpen(false)
 	}
+
+	const fetchSchemas = () => {
+		axios
+			.get("/api/v1/silos/list/") // Update the API endpoint as necessary
+			.then((response) => {
+				setSchemas(response.data)
+			})
+			.catch((error) => {
+				console.error("Error fetching schemas:", error)
+			})
+	}
+
+	React.useEffect(() => {
+		fetchSchemas()
+	}, [])
 
 	const handleNameClick = (databaseId) => {
 		navigate(`/flow/databases/${databaseId}`)
@@ -233,7 +198,7 @@ export default function DatabaseTable() {
 
 	const handleSelectAllClick = (event) => {
 		if (event.target.checked) {
-			const newSelected = rows.map((n) => n.id)
+			const newSelected = schemas.map((n) => n.id)
 			setSelected(newSelected)
 			return
 		}
@@ -268,13 +233,14 @@ export default function DatabaseTable() {
 	const isSelected = (id) => selected.indexOf(id) !== -1
 
 	// Avoid a layout jump when reaching the last page with empty rows.
-	const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
+	const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - schemas.length) : 0
 
+	// Filter and sort schemas based on search term and sorting
 	const visibleRows = React.useMemo(() => {
-		return stableSort(rows, getComparator(order, orderBy))
-			.filter((row) => row.name.toLowerCase().includes(searchTerm.toLowerCase()))
+		return stableSort(schemas, getComparator(order, orderBy))
+			.filter((row) => row.schema_name.toLowerCase().includes(searchTerm.toLowerCase()))
 			.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-	}, [order, orderBy, page, rowsPerPage, searchTerm])
+	}, [order, orderBy, page, rowsPerPage, searchTerm, schemas])
 
 	return (
 		<Box sx={{ width: "100%" }}>
@@ -283,8 +249,8 @@ export default function DatabaseTable() {
 					<Paper component="form" sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: "100%" }}>
 						<InputBase
 							sx={{ ml: 1, flex: 1 }}
-							placeholder="Search Databases"
-							inputProps={{ "aria-label": "search databases" }}
+							placeholder="Search Silos"
+							inputProps={{ "aria-label": "search silos" }}
 							value={searchTerm}
 							onChange={handleSearch} // Set up search handling
 						/>
@@ -315,7 +281,7 @@ export default function DatabaseTable() {
 							orderBy={orderBy}
 							onSelectAllClick={handleSelectAllClick}
 							onRequestSort={handleRequestSort}
-							rowCount={rows.length}
+							rowCount={schemas.length}
 						/>
 						<TableBody>
 							{visibleRows.map((row, index) => {
@@ -342,14 +308,9 @@ export default function DatabaseTable() {
 											/>
 										</TableCell>
 										<TableCell component="th" scope="row" onClick={() => handleNameClick(row.id)}>
-											{row.name}
+											{row.schema_name}
 										</TableCell>
-										<TableCell align="left">{row.type}</TableCell>
-										<TableCell align="left">
-											<DatabaseStatusIndicator status={row.status} />
-										</TableCell>
-										<TableCell align="left">{row.host}</TableCell>
-										<TableCell align="left">{row.port}</TableCell>
+										<TableCell align="left">{row.created_at}</TableCell>
 									</TableRow>
 								)
 							})}
@@ -368,7 +329,7 @@ export default function DatabaseTable() {
 				<TablePagination
 					rowsPerPageOptions={[5, 10, 25, 50]}
 					component="div"
-					count={rows.length}
+					count={schemas.length}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					onPageChange={handleChangePage}

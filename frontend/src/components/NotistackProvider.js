@@ -13,8 +13,6 @@ import { IconButtonAnimate } from "./animate"
 function SnackbarStyles() {
 	const theme = useTheme()
 
-	const isLight = theme.palette.mode === "light"
-
 	return (
 		<GlobalStyles
 			styles={{
@@ -25,8 +23,8 @@ function SnackbarStyles() {
 						margin: theme.spacing(0.25, 0),
 						boxShadow: theme.customShadows.z8,
 						borderRadius: theme.shape.borderRadius,
-						color: theme.palette.grey[isLight ? 0 : 800],
-						backgroundColor: theme.palette.grey[isLight ? 900 : 0],
+						color: theme.palette.grey[800],
+						backgroundColor: theme.palette.grey[0],
 						"&.SnackbarItem-variantSuccess, &.SnackbarItem-variantError, &.SnackbarItem-variantWarning, &.SnackbarItem-variantInfo": {
 							color: theme.palette.text.primary,
 							backgroundColor: theme.palette.background.paper,

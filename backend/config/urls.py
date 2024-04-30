@@ -55,7 +55,7 @@ urlpatterns = [
         name="swagger-ui",
     ),
     path("api/v1/accounts/", include("accounts.urls")),
-    path("api/v1/databases/", include("databases.urls")),
+    path("api/v1/silos/", include("silos.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

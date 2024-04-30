@@ -51,6 +51,8 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    first_name = None
+    last_name = None
     username = None
     id = models.UUIDField(
         primary_key=True, unique=True, default=uuid.uuid4, editable=False

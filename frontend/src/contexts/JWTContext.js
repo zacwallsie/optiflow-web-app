@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 import { createContext, useEffect, useReducer } from "react"
 // utils
 import axios from "../utils/axios"
-import { isValidToken, setSession } from "../utils/jwt"
+import { isValidToken, setSession, setAccess } from "../utils/jwt"
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ function AuthProvider({ children }) {
 				const accessToken = sessionStorage.getItem("accessToken")
 
 				if (accessToken && isValidToken(accessToken)) {
-					setSession(accessToken)
+					setAccess(accessToken)
 
 					const response = await axios.get("/api/v1/accounts/profile/")
 					const { user } = response.data
@@ -115,7 +115,8 @@ function AuthProvider({ children }) {
 		})
 		const { user } = response.data
 		const accessToken = response.data.access
-		setSession(accessToken)
+		const refreshToken = response.data.refresh
+		setSession(accessToken, refreshToken)
 
 		dispatch({
 			type: "LOGIN",
@@ -133,7 +134,8 @@ function AuthProvider({ children }) {
 		})
 		const { user } = response.data
 		const accessToken = response.data.access
-		setSession(accessToken)
+		const refreshToken = response.data.refresh
+		setSession(accessToken, refreshToken)
 
 		dispatch({
 			type: "REGISTER",
@@ -144,8 +146,6 @@ function AuthProvider({ children }) {
 	}
 
 	const logout = async () => {
-		// Clear the access token from local storage
-		localStorage.removeItem("accessToken")
 		// Clear the session in the HTTP client (e.g., Axios)
 		setSession(null)
 		// Update the state to reflect the user's logged-out status

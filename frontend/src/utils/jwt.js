@@ -1,64 +1,72 @@
-import jwtDecode from 'jwt-decode'
-// routes
-import { PATH_AUTH } from '../routes/paths'
-//
-import axios from './axios'
+import { useSnackbar } from "notistack"
+import jwtDecode from "jwt-decode"
+import axios from "./axios"
+import { PATH_AUTH } from "../routes/paths"
 
 // ----------------------------------------------------------------------
-
+//TODO: Need to fix refresh - appears to through error
 const isValidToken = (accessToken) => {
-  if (!accessToken) {
-    return false
-  }
-  const decoded = jwtDecode(accessToken)
-
-  const currentTime = Date.now() / 1000
-
-  return decoded.exp > currentTime
+	if (!accessToken) {
+		return false
+	}
+	const decoded = jwtDecode(accessToken)
+	const currentTime = Date.now() / 1000
+	return decoded.exp > currentTime
+}
+const refreshAccessToken = async () => {
+	try {
+		const refreshToken = localStorage.getItem("refreshToken")
+		const response = await axios.post("/api/v1/accounts/token/refresh/", { refresh: refreshToken })
+		const { accessToken } = response.data
+		setAccess(accessToken)
+		return accessToken
+	} catch (error) {
+		console.error("Error refreshing access token:", error)
+		setAccess(null)
+		setTimeout(() => {
+			//window.location.href = PATH_AUTH.login
+		}, 5000) // Redirect after 5 seconds to give user time to see the message
+	}
 }
 
 const handleTokenExpired = (exp) => {
-  let expiredTimer
+	let expiredTimer
+	const currentTime = Date.now() / 1000
+	const timeLeft = exp - currentTime
 
-  // const currentTime = Date.now()
+	clearTimeout(expiredTimer)
 
-  //  convert exp into remaining days
-
-  // const timeLeft = exp * 1000 + currentTime //
-
-  // Test token expires after 10s
-  // const timeLeft = currentTime + 10000 - currentTime // ~10s
-  // const timeLeft = currentTime + 8640000 - currentTime // 1 day
-  const timeLeft = exp * 1000
-  // console.log('currentTime', currentTime, 'exp', exp * 1000)
-  // const timeLeft = exp - currentTime
-
-  // console.log('timeLeft', timeLeft)
-
-  clearTimeout(expiredTimer)
-
-  expiredTimer = setTimeout(() => {
-    // eslint-disable-next-line no-alert
-    alert('Token expired')
-
-    localStorage.removeItem('accessToken')
-
-    window.location.href = PATH_AUTH.login
-  }, timeLeft)
+	expiredTimer = setTimeout(async () => {
+		// Attempt to refresh the token
+		await refreshAccessToken()
+	}, timeLeft)
 }
 
-const setSession = (accessToken) => {
-  if (accessToken) {
-    localStorage.setItem('accessToken', accessToken)
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+const setAccess = (accessToken) => {
+	if (accessToken) {
+		localStorage.setItem("accessToken", accessToken)
+		axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
 
-    // This function below will handle when token is expired
-    // const { exp } = jwtDecode(accessToken) // ~3 days by minimals server
-    // handleTokenExpired(exp)
-  } else {
-    localStorage.removeItem('accessToken')
-    delete axios.defaults.headers.common.Authorization
-  }
+		// Decode the new token to set the expiration correctly
+		const { exp } = jwtDecode(accessToken)
+		handleTokenExpired(exp)
+	} else {
+		localStorage.removeItem("accessToken")
+		localStorage.removeItem("refreshToken")
+		delete axios.defaults.headers.common.Authorization
+		window.location.href = PATH_AUTH.login
+	}
+}
+const setSession = (accessToken, refreshToken) => {
+	if (accessToken && refreshToken) {
+		localStorage.setItem("refreshToken", refreshToken)
+		setAccess(accessToken)
+	} else {
+		localStorage.removeItem("accessToken")
+		localStorage.removeItem("refreshToken")
+		delete axios.defaults.headers.common.Authorization
+		window.location.href = PATH_AUTH.login
+	}
 }
 
-export { isValidToken, setSession }
+export { isValidToken, setSession, setAccess }
