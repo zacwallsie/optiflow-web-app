@@ -19,12 +19,13 @@ const MainStyle = styled("main", {
 })(({ collapseClick, theme }) => ({
 	flexGrow: 1,
 	paddingTop: HEADER.MOBILE_HEIGHT + 24,
-	paddingBottom: HEADER.MOBILE_HEIGHT + 24,
+	paddingBottom: 0,
+	height: "100vh",
 	[theme.breakpoints.up("lg")]: {
 		paddingLeft: 8,
 		paddingRight: 8,
 		paddingTop: HEADER.DASHBOARD_DESKTOP_HEIGHT + 24,
-		paddingBottom: HEADER.DASHBOARD_DESKTOP_HEIGHT + 24,
+		paddingBottom: 0,
 		width: `calc(100% - ${NAVBAR.DASHBOARD_WIDTH}px)`,
 		transition: theme.transitions.create("margin-left", {
 			duration: theme.transitions.duration.shorter,

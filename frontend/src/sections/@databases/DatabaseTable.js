@@ -1,5 +1,6 @@
 import * as React from "react"
 import PropTypes from "prop-types"
+import { useSnackbar } from "notistack"
 import axios from "../../utils/axios"
 import { alpha } from "@mui/material/styles"
 import Box from "@mui/material/Box"
@@ -30,7 +31,8 @@ import { useNavigate } from "react-router-dom"
 // section utils
 import { stableSort, getComparator } from "../section_utils/index"
 // components
-import CreateDatabaseForm from "./CreateDatabaseForm"
+import CreateSiloForm from "./CreateSiloForm"
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog"
 
 const headCells = [
 	{
@@ -103,7 +105,7 @@ EnhancedTableHead.propTypes = {
 }
 
 function EnhancedTableToolbar(props) {
-	const { numSelected } = props
+	const { numSelected, onDeleteSelected } = props
 
 	return (
 		<Toolbar
@@ -121,22 +123,20 @@ function EnhancedTableToolbar(props) {
 				</Typography>
 			) : (
 				<Typography sx={{ flex: "1 1 100%" }} variant="h6" id="tableTitle" component="div">
-					Connected Databases
+					Data Silos
 				</Typography>
 			)}
 
 			{numSelected > 0 ? (
 				<Tooltip title="Delete">
-					<IconButton>
+					<IconButton onClick={onDeleteSelected}>
 						<DeleteIcon />
 					</IconButton>
 				</Tooltip>
 			) : (
-				<Tooltip title="Filter list">
-					<IconButton>
-						<FilterListIcon />
-					</IconButton>
-				</Tooltip>
+				<IconButton>
+					<FilterListIcon />
+				</IconButton>
 			)}
 		</Toolbar>
 	)
@@ -146,7 +146,9 @@ EnhancedTableToolbar.propTypes = {
 	numSelected: PropTypes.number.isRequired,
 }
 
-export default function DatabaseTable() {
+export default function SiloTable() {
+	const { enqueueSnackbar } = useSnackbar()
+	const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false)
 	const [schemas, setSchemas] = React.useState([])
 	const [order, setOrder] = React.useState("asc")
 	const [orderBy, setOrderBy] = React.useState("name")
@@ -156,30 +158,56 @@ export default function DatabaseTable() {
 	const [searchTerm, setSearchTerm] = React.useState("")
 	const navigate = useNavigate()
 
-	const [open, setAddDbOpen] = React.useState(false)
+	const [open, setAddSiloOpen] = React.useState(false)
 
-	const handleAddDbOpen = () => {
-		setAddDbOpen(true)
+	const handleAddSiloOpen = () => {
+		setAddSiloOpen(true)
 	}
 
-	const handleAddDbClose = () => {
-		setAddDbOpen(false)
+	const handleAddSiloClose = () => {
+		setAddSiloOpen(false)
 	}
 
-	const fetchSchemas = () => {
+	const fetchSilos = () => {
 		axios
-			.get("/api/v1/silos/list/") // Update the API endpoint as necessary
+			.get("/api/v1/silos/list/")
 			.then((response) => {
 				setSchemas(response.data)
 			})
 			.catch((error) => {
 				console.error("Error fetching schemas:", error)
+				enqueueSnackbar("Failed to fetch Silos", { variant: "error" })
 			})
 	}
 
 	React.useEffect(() => {
-		fetchSchemas()
+		fetchSilos()
 	}, [])
+
+	const handleDelete = () => {
+		if (selected.length > 0) {
+			setOpenDeleteDialog(true)
+		} else {
+			enqueueSnackbar("No silos selected for deletion", { variant: "warning" })
+		}
+	}
+
+	const confirmDelete = () => {
+		axios
+			.post("/api/v1/silos/delete/", { ids: selected })
+			.then((response) => {
+				// Update state and UI accordingly
+				enqueueSnackbar("Silos deleted successfully", { variant: "success" })
+			})
+			.catch((error) => {
+				console.error("Error deleting silos:", error)
+				enqueueSnackbar("Failed to delete silos", { variant: "error" })
+			})
+			.finally(() => {
+				setSelected([])
+				fetchSilos()
+			})
+	}
 
 	const handleNameClick = (databaseId) => {
 		navigate(`/flow/databases/${databaseId}`)
@@ -264,15 +292,16 @@ export default function DatabaseTable() {
 						variant="contained"
 						startIcon={<AddIcon />}
 						sx={{ fontSize: "0.875rem", width: "100%", height: 48 }}
-						onClick={handleAddDbOpen}
+						onClick={handleAddSiloOpen}
 					>
-						Create Database
+						Create Silo
 					</Button>
 				</Grid>
 			</Grid>
-			<CreateDatabaseForm open={open} onClose={handleAddDbClose} />
+			<CreateSiloForm open={open} onClose={handleAddSiloClose} onSiloCreated={fetchSilos} />
 			<Paper sx={{ width: "100%", mb: 2 }}>
-				<EnhancedTableToolbar numSelected={selected.length} />
+				<EnhancedTableToolbar numSelected={selected.length} onDeleteSelected={handleDelete} />
+				<ConfirmDeleteDialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)} onConfirm={confirmDelete} />
 				<TableContainer>
 					<Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
 						<EnhancedTableHead

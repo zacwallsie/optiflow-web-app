@@ -5,7 +5,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, D
 import axios from "../../utils/axios"
 import * as Yup from "yup"
 
-function CreateDatabaseForm({ open, onClose }) {
+function CreateSiloForm({ open, onClose, onSiloCreated }) {
 	const [submitError, setSubmitError] = useState("")
 
 	const databaseSchema = Yup.object().shape({
@@ -38,6 +38,7 @@ function CreateDatabaseForm({ open, onClose }) {
 			const response = await axios.post("/api/v1/silos/create/", data)
 			console.log(response.data)
 			onClose()
+			onSiloCreated()
 		} catch (error) {
 			console.error("Error creating database:", error)
 			setSubmitError(error.detail || "An error occurred while creating the silo.")
@@ -46,9 +47,9 @@ function CreateDatabaseForm({ open, onClose }) {
 
 	return (
 		<Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
-			<DialogTitle id="form-dialog-title">Create New Database</DialogTitle>
+			<DialogTitle id="form-dialog-title">Create New Silo</DialogTitle>
 			<DialogContent>
-				<DialogContentText sx={{ mb: 2 }}>Enter details for the new PostgreSQL database.</DialogContentText>
+				<DialogContentText sx={{ mb: 2 }}>Enter details for the new data Silo.</DialogContentText>
 				{submitError && (
 					<Alert severity="error" sx={{ mb: 2 }}>
 						{submitError}
@@ -58,7 +59,7 @@ function CreateDatabaseForm({ open, onClose }) {
 					autoFocus
 					margin="dense"
 					name="schema_name"
-					label="Database Name"
+					label="Silo Name"
 					type="text"
 					fullWidth
 					variant="outlined"
@@ -80,4 +81,4 @@ function CreateDatabaseForm({ open, onClose }) {
 	)
 }
 
-export default CreateDatabaseForm
+export default CreateSiloForm

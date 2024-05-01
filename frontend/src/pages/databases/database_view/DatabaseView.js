@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react"
-import { Container, Grid } from "@mui/material"
+import { Box, Container, Grid } from "@mui/material"
 import { useParams } from "react-router-dom"
 
 import { PATH_DASHBOARD } from "../../../routes/paths"
 import Page from "../../../components/Page"
 import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs"
+import { styled } from "@mui/material/styles"
 
 // sections
 import {
@@ -49,37 +50,28 @@ export default function DatabaseView() {
 				<HeaderBreadcrumbs
 					heading={databaseDetails.name || "Database"}
 					links={[
-						{ name: "Databases", href: PATH_DASHBOARD.general.databases },
+						{ name: "All Silos", href: PATH_DASHBOARD.general.databases },
 						...(databaseDetails.name ? [{ name: databaseDetails.name, href: "", isActive: true }] : []),
 					]}
+					sx={{ mb: 0 }}
 				/>
-				<Grid container spacing={3}>
-					<Grid item xs={10} sx={{ height: "100%" }}>
-						<Grid container spacing={3}>
-							{/* Top Left - Database Overview */}
-							<Grid item xs={4}>
-								<DatabaseOverview details={databaseDetails} />
-							</Grid>
-
-							{/* Top Middle - Database Configuration */}
-							<Grid item xs={8}>
-								<DatabaseConfigurationEditor config={config} onSave={() => {}} />
-							</Grid>
-
-							{/* Bottom left remaining cells - DataTable */}
-							<Grid item xs={12}>
-								<TableDataViewer />
-							</Grid>
-						</Grid>
-					</Grid>
-
-					{/* Right 3 cells - TableViewer */}
-					<Grid item xs={2}>
-						{/* Adjust the height as per your header/navbar height */}
-						<TableViewer />
-					</Grid>
-				</Grid>
 			</Container>
+			<Box display="flex" height="88vh">
+				{" "}
+				{/* Using Box for flex display */}
+				{/* Left space - TableDataViewer */}
+				<Box flex={1} height="100%">
+					{" "}
+					{/* Box takes remaining space */}
+					<TableDataViewer />
+				</Box>
+				{/* Right fixed width - TableViewer */}
+				<Box width={250} height="100%" sx={{ padding: 0 }}>
+					{" "}
+					{/* Fixed width for TableViewer */}
+					<TableViewer />
+				</Box>
+			</Box>
 		</Page>
 	)
 }

@@ -1,14 +1,29 @@
 import * as React from "react"
-import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import { DataGrid, GridToolbarContainer, GridToolbarFilterButton, GridToolbarExport } from "@mui/x-data-grid"
 import Button from "@mui/material/Button"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle"
 import TextField from "@mui/material/TextField"
+import { styled } from "@mui/material/styles"
 
-function CustomToolbar() {
-	return <GridToolbar>{/* Placeholder for custom toolbar actions */}</GridToolbar>
+const StyledButton = styled(Button)(({ theme }) => ({
+	margin: theme.spacing(1),
+}))
+
+function CustomToolbar({ onAddRow, onOpenColumnDialog }) {
+	return (
+		<GridToolbarContainer>
+			<GridToolbarExport printOptions={{ disableToolbarButton: true }} />
+			<StyledButton onClick={onOpenColumnDialog} color="secondary" variant="contained">
+				Add Column
+			</StyledButton>
+			<StyledButton onClick={onAddRow} color="secondary" variant="contained">
+				Add Row
+			</StyledButton>
+		</GridToolbarContainer>
+	)
 }
 
 export default function TableDataViewer() {
@@ -42,22 +57,29 @@ export default function TableDataViewer() {
 	}
 
 	return (
-		<div style={{ height: "600px", width: "100%" }}>
-			<Button onClick={handleOpen} color="primary" variant="contained" style={{ margin: 8 }}>
-				Add Column
-			</Button>
-			<Button onClick={handleAddRow} color="secondary" variant="contained" style={{ margin: 8 }}>
-				Add Row
-			</Button>
+		<div style={{ height: "100%", width: "100%" }}>
 			<DataGrid
 				rows={rows}
 				columns={columns}
-				pageSize={5}
-				rowsPerPageOptions={[5]}
+				columnBufferPx={100}
+				rowBufferPx={100}
 				checkboxSelection
 				disableSelectionOnClick
 				components={{
 					Toolbar: CustomToolbar,
+				}}
+				initialState={{
+					pagination: { paginationModel: { pageSize: 5 } },
+				}}
+				pageSizeOptions={[5, 10, 25]}
+				componentsProps={{
+					toolbar: {
+						onAddRow: handleAddRow,
+						onOpenColumnDialog: handleOpen,
+					},
+				}}
+				sx={{
+					backgroundColor: "background.default",
 				}}
 			/>
 			<Dialog open={open} onClose={handleClose}>
