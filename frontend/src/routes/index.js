@@ -19,7 +19,7 @@ const Loadable = (Component) => (props) => {
 	const { pathname } = useLocation()
 
 	return (
-		<Suspense fallback={<LoadingScreen isDashboard={pathname.includes("/dashboard")} />}>
+		<Suspense fallback={<LoadingScreen isDashboard={pathname.includes("/flow")} />}>
 			<Component {...props} />
 		</Suspense>
 	)
@@ -64,10 +64,8 @@ export default function Router() {
 			),
 			children: [
 				{ element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
-				{ path: "queries", element: <QueriesPage /> },
-				{ path: "queries/:queryId", element: <QueryView /> },
-				{ path: "databases", element: <DatabasesPage /> },
-				{ path: "databases/:databaseId", element: <DatabaseView /> },
+				{ path: "silos", element: <SilosPage /> },
+				{ path: "silos/:siloId", element: <SiloView /> },
 				{
 					path: "user",
 					children: [
@@ -104,10 +102,8 @@ const VerifyCode = Loadable(lazy(() => import("../pages/auth/VerifyCode")))
 const UserAccount = Loadable(lazy(() => import("../pages/user_account/UserAccount")))
 
 // GENERAL
-const DatabasesPage = Loadable(lazy(() => import("../pages/databases/DatabasesPage")))
-const DatabaseView = Loadable(lazy(() => import("../pages/databases/database_view/DatabaseView")))
-const QueriesPage = Loadable(lazy(() => import("../pages/queries/QueriesPage")))
-const QueryView = Loadable(lazy(() => import("../pages/queries/queries_view/QueryView")))
+const SilosPage = Loadable(lazy(() => import("../pages/silos/SilosPage")))
+const SiloView = Loadable(lazy(() => import("../pages/silos/silo_view/SiloView")))
 
 const Page500 = Loadable(lazy(() => import("../pages/Page500")))
 const Page403 = Loadable(lazy(() => import("../pages/Page403")))

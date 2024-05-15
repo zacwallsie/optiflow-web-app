@@ -29,8 +29,7 @@ export const PATH_PAGE = {
 export const PATH_DASHBOARD = {
 	root: ROOTS_DASHBOARD,
 	general: {
-		databases: path(ROOTS_DASHBOARD, "/databases"),
-		queries: path(ROOTS_DASHBOARD, "/queries"),
+		silos: path(ROOTS_DASHBOARD, "/silos"),
 	},
 
 	permissionDenied: path(ROOTS_DASHBOARD, "/permission-denied"),

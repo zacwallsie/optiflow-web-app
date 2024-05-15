@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, connection
 from django.conf import settings
 import uuid
 
@@ -10,15 +10,16 @@ class UserSilo(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="silos"
     )
-    schema_name = models.CharField(max_length=100)
+    silo_name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         app_label = "silos"
         managed = True
         unique_together = (
             "user",
-            "schema_name",
+            "silo_name",
         )  # Ensures user cannot have duplicate schema names
 
     def __str__(self):

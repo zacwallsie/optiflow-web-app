@@ -37,7 +37,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSeralizer(serializers.ModelSerializer):
-    """Use this serializer to get the user profile"""
+    """Serializer used to get the user profile"""
 
     class Meta:
         model = User

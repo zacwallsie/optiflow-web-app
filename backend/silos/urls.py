@@ -1,30 +1,44 @@
 from django.urls import path
 from .views import (
-    CreateUserSiloView,
-    ListUserSilosView,
-    DeleteUserSiloView,
-    SiloTableDataView,
-    SiloTableMetadataView,
-    SiloTableNamesView,
+    IndividualSiloView,
+    SiloView,
+    BatchDeleteSiloView,
+    IndividualSiloTableView,
+    SiloTableView,
+    IndividualColumnView,
+    SiloColumnView,
+    IndividualSiloRowView,
+    SiloRowView,
 )
 
 urlpatterns = [
-    path("create/", CreateUserSiloView.as_view(), name="create-silo"),
-    path("list/", ListUserSilosView.as_view(), name="list-silo"),
-    path("delete/", DeleteUserSiloView.as_view(), name="delete-silos"),
+    path("", SiloView.as_view(), name="silo"),
+    path("batch/delete/", BatchDeleteSiloView.as_view(), name="batch-delete-silo"),
+    path("<str:silo_id>/", IndividualSiloView.as_view(), name="individual-silo"),
+    path("<str:silo_id>/tables/", SiloTableView.as_view(), name="silo-table"),
     path(
-        "<str:schema_name>/tables/<str:table_name>/data/",
-        SiloTableDataView.as_view(),
-        name="silo-table-data",
+        "<str:silo_id>/tables/<str:table_name>/",
+        IndividualSiloTableView.as_view(),
+        name="individual-silo-table",
     ),
     path(
-        "<str:schema_name>/tables/",
-        SiloTableNamesView.as_view(),
-        name="silo-table-names",
+        "<str:silo_id>/tables/<str:table_name>/columns/",
+        SiloColumnView.as_view(),
+        name="silo-column",
     ),
     path(
-        "<str:schema_name>/tables/<str:table_name>/metadata/",
-        SiloTableMetadataView.as_view(),
-        name="silo-table-metadata",
+        "<str:silo_id>/tables/<str:table_name>/columns/<str:column_name>/",
+        IndividualColumnView.as_view(),
+        name="individual-silo-column",
+    ),
+    path(
+        "<str:silo_id>/tables/<str:table_name>/rows/",
+        SiloRowView.as_view(),
+        name="silo-row",
+    ),
+    path(
+        "<str:silo_id>/tables/<str:table_name>/rows/<str:row_id>/",
+        IndividualSiloRowView.as_view(),
+        name="individual-silo-row",
     ),
 ]

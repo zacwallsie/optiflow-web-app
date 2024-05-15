@@ -6,8 +6,8 @@ from django.db import IntegrityError
 class UserSiloSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserSilo
-        fields = ["id", "schema_name", "user", "created_at"]
-        read_only_fields = ["id", "user", "created_at"]
+        fields = ["id", "silo_name", "user", "created_at", "last_modified"]
+        read_only_fields = ["id", "user", "created_at", "last_modified"]
 
     def create(self, validated_data):
         # Assumes `user` is still automatically attached in the view.

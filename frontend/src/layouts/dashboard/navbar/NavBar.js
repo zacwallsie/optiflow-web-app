@@ -42,11 +42,10 @@ const navConfig = [
 		subheader: "",
 		items: [
 			{
-				title: "databases",
-				path: PATH_DASHBOARD.general.databases,
+				title: "silos",
+				path: PATH_DASHBOARD.general.silos,
 				icon: ICONS.analytics,
 			},
-			{ title: "queries", path: PATH_DASHBOARD.general.queries, icon: ICONS.booking },
 		],
 	},
 ]
@@ -264,12 +263,6 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
 	const isDesktop = useResponsive("up", "lg")
 
 	const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } = useCollapseDrawer()
-
-	const [isDatabaseDrawerOpen, setDatabaseDrawerOpen] = useState(false)
-
-	const handleToggleDatabaseDrawer = () => {
-		setDatabaseDrawerOpen(!isDatabaseDrawerOpen)
-	}
 
 	useEffect(() => {
 		if (isOpenSidebar) {
