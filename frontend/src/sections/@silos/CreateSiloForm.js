@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, DialogContentText, Alert } from "@mui/material"
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Alert } from "@mui/material"
 import axios from "../../utils/axios"
 import * as Yup from "yup"
 
@@ -62,6 +62,7 @@ function CreateSiloForm({ open, onClose, onSiloCreated }) {
 					type="text"
 					fullWidth
 					variant="outlined"
+					autoComplete="off"
 					error={!!errors.silo_name}
 					helperText={errors.silo_name?.message}
 					{...register("silo_name")}

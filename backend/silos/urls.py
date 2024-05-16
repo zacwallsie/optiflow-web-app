@@ -1,12 +1,18 @@
 from django.urls import path
-from .views import (
+from .viewsSilos import (
     IndividualSiloView,
     SiloView,
     BatchDeleteSiloView,
+)
+from .viewsTables import (
     IndividualSiloTableView,
     SiloTableView,
+)
+from .viewsColumns import (
     IndividualColumnView,
     SiloColumnView,
+)
+from .viewsRows import (
     IndividualSiloRowView,
     SiloRowView,
 )

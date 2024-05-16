@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useCallback } from "react"
 import {
 	Tabs,
 	Tab,
@@ -21,27 +21,10 @@ import axios from "../../../utils/axios"
 import MoreVertIcon from "@mui/icons-material/MoreVert"
 import { useSnackbar } from "notistack"
 
-export default function DataViewer({ onTableSelect }) {
+export default function DataViewer({ Tables, onTableSelect }) {
 	const { enqueueSnackbar } = useSnackbar()
 	const { siloId } = useParams() // Extract the siloId from URL
 	const [tables, setTables] = useState([])
-
-	// Getting Silo Details
-	const fetchTableNames = () => {
-		axios
-			.get(`/api/v1/silos/${siloId}/tables/`)
-			.then((response) => {
-				setTables(response.data.tables)
-			})
-			.catch((error) => {
-				console.error("Error fetching table names:", error)
-				enqueueSnackbar("Failed to Fetch Tables", { variant: "error" })
-			})
-	}
-
-	React.useEffect(() => {
-		fetchTableNames()
-	}, [])
 
 	const [currentTab, setCurrentTab] = useState(0)
 	const [contextMenu, setContextMenu] = useState(null)
@@ -51,12 +34,22 @@ export default function DataViewer({ onTableSelect }) {
 	const [newTableName, setNewTableName] = useState("")
 	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
-	const handleChange = (event, newValue) => {
-		setCurrentTab(newValue)
-		if (tables && tables.length > newValue) {
-			onTableSelect(tables[newValue]) // Ensure the table exists before selecting it
+	React.useEffect(() => {
+		if (Tables) {
+			setTables(Tables)
 		}
-	}
+	}, [Tables])
+
+	const handleChange = useCallback(
+		(event, newValue) => {
+			setCurrentTab(newValue)
+			if (tables && tables.length > newValue) {
+				onTableSelect(tables[newValue]) // Ensure the table exists before selecting it
+			}
+		},
+		[tables, onTableSelect]
+	) // Dependencies include tables and onTableSelect
+
 	const handleAddTable = () => {
 		const newTable = `Table${tables.length + 1}`
 		// Add new table to the database
@@ -68,7 +61,10 @@ export default function DataViewer({ onTableSelect }) {
 			})
 			.catch((error) => {
 				console.error("Error creating table:", error)
-				enqueueSnackbar("Failed to Create Table", { variant: "error" })
+				enqueueSnackbar("Failed to Create Table - " + (error?.detail || "Unknown error"), {
+					variant: "error",
+					autoHideDuration: 4000,
+				})
 			})
 	}
 
@@ -97,7 +93,10 @@ export default function DataViewer({ onTableSelect }) {
 			})
 			.catch((error) => {
 				console.error("Error deleting table:", error)
-				enqueueSnackbar("Failed to Delete Table", { variant: "error" })
+				enqueueSnackbar("Failed to Delete Table - " + (error?.detail || "Unknown error"), {
+					variant: "error",
+					autoHideDuration: 4000,
+				})
 			})
 		handleClose()
 	}
@@ -132,8 +131,11 @@ export default function DataViewer({ onTableSelect }) {
 				setRenameDialogOpen(false)
 			})
 			.catch((error) => {
-				console.error("Error renaming table:", error)
-				enqueueSnackbar(error.detail || "Failed to Rename Table", { variant: "error" })
+				console.error("Error renaming table:", error.detail || error)
+				enqueueSnackbar("Failed to Rename Table - " + (error?.detail || "Unknown error"), {
+					variant: "error",
+					autoHideDuration: 4000,
+				})
 			})
 	}
 
@@ -212,6 +214,7 @@ export default function DataViewer({ onTableSelect }) {
 						id="name"
 						type="text"
 						fullWidth
+						autoComplete="off"
 						variant="standard"
 						value={newTableName}
 						onChange={(e) => setNewTableName(e.target.value)}

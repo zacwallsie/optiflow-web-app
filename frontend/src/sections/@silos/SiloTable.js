@@ -182,7 +182,10 @@ export default function SiloTable() {
 			})
 			.catch((error) => {
 				console.error("Error fetching schemas:", error)
-				enqueueSnackbar("Failed to fetch Silos", { variant: "error" })
+				enqueueSnackbar("Failed to Fetch Silos - " + (error?.detail || "Unknown error"), {
+					variant: "error",
+					autoHideDuration: 4000,
+				})
 			})
 	}
 
@@ -204,11 +207,14 @@ export default function SiloTable() {
 			.post("/api/v1/silos/batch/delete/", { silo_ids: selected })
 			.then((response) => {
 				// Update state and UI accordingly
-				enqueueSnackbar("Silos deleted successfully", { variant: "success" })
+				enqueueSnackbar("Silos Deleted Successfully", { variant: "success" })
 			})
 			.catch((error) => {
 				console.error("Error deleting silos:", error)
-				enqueueSnackbar("Failed to delete Silos", { variant: "error" })
+				enqueueSnackbar("Failed to Delete Silos - " + (error?.detail || "Unknown error"), {
+					variant: "error",
+					autoHideDuration: 4000,
+				})
 			})
 			.finally(() => {
 				setSelected([])
