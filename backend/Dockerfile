@@ -16,7 +16,7 @@ WORKDIR /home/worker/app/backend
 COPY --chown=worker:worker ["config/*.py", "config/"]
 COPY --chown=worker:worker ["accounts/", "accounts/"]
 COPY --chown=worker:worker ["silos/", "silos/"]
-COPY --chown=worker:worker ["manage.py", "requirements/requirements.txt", "startserver.sh", "./"]
+COPY --chown=worker:worker ["manage.py", "requirements.txt", "startserver.sh", "./"]
 ENV PATH="/home/worker/.local/bin:${PATH}"
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
