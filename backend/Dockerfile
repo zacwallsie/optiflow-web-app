@@ -21,10 +21,11 @@ COPY --chown=worker:worker ["config/*.py", "config/"]
 COPY --chown=worker:worker ["accounts/", "accounts/"]
 COPY --chown=worker:worker ["silos/", "silos/"]
 COPY --chown=worker:worker ["manage.py", "./"]
-RUN chmod 500 startserver.sh
 
 USER worker
 ENV PATH="/home/worker/.local/bin:${PATH}"
 
 EXPOSE 8000
+RUN python manage.py makemigrations
+RUN python manage.py migrate
 RUN python manage.py runserver 0.0.0.0:8000
