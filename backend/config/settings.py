@@ -38,6 +38,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:*",
     "https://stage-api.example.com",
     "https://optiflow.com",
+    "https://cloud.digitalocean.com",
 ]
 
 # Application definition
