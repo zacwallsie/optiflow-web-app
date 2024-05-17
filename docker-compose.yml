@@ -3,6 +3,15 @@
 version: "3.9"
 
 services:
+    db:
+        image: postgres
+        restart: always
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+            POSTGRES_USER: ${DATABASE_USERNAME} # Ensure you have this if you use a custom user
+            POSTGRES_DB: optiflow_db
     django:
         image: python:3.12.3-bookworm
         restart: unless-stopped
@@ -30,6 +39,8 @@ services:
             - 8000:8000
         volumes:
             - ./backend/logs:/home/worker/app/backend/logs:rw
+        depends_on:
+            - db
     nginx:
         image: nginx:1.21.4-alpine
         volumes:
