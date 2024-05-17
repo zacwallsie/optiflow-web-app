@@ -207,8 +207,9 @@ CORS_ALLOWED_ORIGINS = [
     "https://optiflow.com",
     "http://localhost:8080",
     "http://localhost:8000",
-    "http://localhost:80",  # React App will be on this port
+    "http://localhost:3000",  # React App will be on this port
     "http://127.0.0.1:9000",
+    "db-postgresql-syd1-48495-do-user-16671986-0.c.db.ondigitalocean.com:25060",
 ]
 
 
