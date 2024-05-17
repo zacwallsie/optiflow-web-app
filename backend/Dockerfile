@@ -20,6 +20,7 @@ RUN pip install --upgrade pip && \
 COPY --chown=worker:worker ["config/*.py", "config/"]
 COPY --chown=worker:worker ["accounts/", "accounts/"]
 COPY --chown=worker:worker ["silos/", "silos/"]
+COPY --chown=worker:worker ["static/", "static/"]
 COPY --chown=worker:worker ["manage.py", "./"]
 
 USER worker
