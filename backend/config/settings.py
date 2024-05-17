@@ -208,7 +208,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://sub.example.com",
     "http://localhost:8080",
     "http://localhost:8000",
-    "http://localhost:3000",  # React App will be on this port
+    "http://localhost:80",  # React App will be on this port
     "http://127.0.0.1:9000",
 ]
 

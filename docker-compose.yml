@@ -27,6 +27,8 @@ services:
             DATABASE_SCHEMA_EDITOR_PASSWORD: ${DATABASE_SCHEMA_EDITOR_PASSWORD}
         ports:
             - 8000:8000
+        volumes:
+            - ./backend/logs:/home/worker/app/backend/logs:rw
     nginx:
         image: nginx:1.21.4-alpine
         volumes:
