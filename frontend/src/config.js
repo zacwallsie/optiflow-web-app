@@ -6,7 +6,7 @@ import { PATH_DASHBOARD } from "./routes/paths"
 // API
 // ----------------------------------------------------------------------
 
-const DRF_LOCAL_HOST = "http://localhost:8000"
+const DRF_LOCAL_HOST = "http://127.0.0.1:8000"
 
 export const HOST_API = process.env.REACT_APP_HOST_API_KEY || DRF_LOCAL_HOST
 
