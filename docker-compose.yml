@@ -30,8 +30,6 @@ services:
             - 8000:8000
         volumes:
             - ./backend/logs:/home/worker/app/backend/logs:rw
-        depends_on:
-            - db
     nginx:
         image: nginx:1.21.4-alpine
         volumes:
