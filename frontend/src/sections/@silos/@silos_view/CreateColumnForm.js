@@ -29,7 +29,6 @@ const columnSchema = yup.object({
 	dataType: yup.string().required("Data type is required"),
 	defaultVal: yup.string(),
 	checkConstraint: yup.string(),
-	isPrimaryKey: yup.boolean(),
 	createIndex: yup.boolean(),
 	collation: yup.string(),
 })
@@ -49,7 +48,6 @@ function CreateColumnForm({ open, handleClose, tableName, siloId }) {
 			dataType: postgresDataTypes[0],
 			defaultVal: "",
 			checkConstraint: "",
-			isPrimaryKey: false,
 			createIndex: false,
 			collation: "",
 		},
@@ -127,7 +125,7 @@ function CreateColumnForm({ open, handleClose, tableName, siloId }) {
 						<FormControlLabel control={<Checkbox {...register("isUnique")} />} label="Unique" />
 						<FormControlLabel control={<Checkbox {...register("isNullable")} />} label="Nullable" />
 					</FormGroup>
-					<Button onClick={handleToggleAdvanced} color="primary">
+					<Button onClick={handleToggleAdvanced} color="primary" sx={{ marginTop: "20px" }}>
 						{showAdvanced ? "Hide Advanced Options" : "Show Advanced Options"}
 					</Button>
 					<Collapse in={showAdvanced}>
@@ -149,7 +147,6 @@ function CreateColumnForm({ open, handleClose, tableName, siloId }) {
 							fullWidth
 							{...register("checkConstraint")}
 						/>
-						<FormControlLabel control={<Checkbox {...register("isPrimaryKey")} />} label="Primary Key" />
 						<FormControlLabel control={<Checkbox {...register("createIndex")} />} label="Create Index" />
 						<TextField
 							margin="dense"

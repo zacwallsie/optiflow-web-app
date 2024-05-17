@@ -8,18 +8,15 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
-from dotenv import load_dotenv
 from pathlib import Path
 from datetime import timedelta
 from django.core.management.utils import get_random_secret_key
 
-load_dotenv()
-
-DB_HOST = os.environ.get("DB_HOST")
-DB_NAME = os.environ.get("DB_NAME")
-DB_USER = os.environ.get("DB_USER")
-DB_PASSWORD = os.environ.get("DB_PASSWORD")
-DB_PORT = os.environ.get("DB_PORT")
+DB_HOST = os.environ.get("DATABASE_HOST")
+DB_NAME = os.environ.get("DATABASE_NAME")
+DB_USER = os.environ.get("DATABASE_USERNAME")
+DB_PASSWORD = os.environ.get("DATABASE_PASSWORD")
+DB_PORT = os.environ.get("DATABASE_PORT")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

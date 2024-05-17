@@ -225,8 +225,10 @@ class SiloTableView(views.APIView):
         with connection.cursor() as cursor:
             cursor.execute(
                 f"""
-                CREATE TABLE "{silo_id}"."{table_name}" ();
-            """
+                CREATE TABLE "{silo_id}"."{table_name}" (
+                    id SERIAL PRIMARY KEY
+                );
+                """
             )
 
     @staticmethod

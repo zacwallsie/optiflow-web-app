@@ -56,8 +56,10 @@ export default function DataViewer({ Tables, onTableSelect }) {
 		axios
 			.post(`/api/v1/silos/${siloId}/tables/`, { table_name: newTable })
 			.then((response) => {
-				setTables([...tables, newTable]) // Update state to include new table
-				setCurrentTab(tables.length)
+				const updatedTables = [...tables, newTable] // Update state to include new table
+				setTables(updatedTables)
+				setCurrentTab(updatedTables.length - 1) // Set the current tab to the new table
+				onTableSelect(newTable) // Call the onTableSelect with the new table name
 			})
 			.catch((error) => {
 				console.error("Error creating table:", error)
@@ -90,6 +92,7 @@ export default function DataViewer({ Tables, onTableSelect }) {
 				const filteredTables = tables.filter((_, index) => index !== contextTabIndex)
 				setTables(filteredTables)
 				setCurrentTab(Math.min(currentTab, filteredTables.length - 1))
+				onTableSelect(tables[currentTab]) // Call the onTableSelect with the new table name
 			})
 			.catch((error) => {
 				console.error("Error deleting table:", error)

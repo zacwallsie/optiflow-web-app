@@ -1,6 +1,7 @@
 from rest_framework import permissions, views, response, status
 from .models import UserSilo
 from django.db import transaction, connection, DatabaseError
+from psycopg2 import sql
 import re
 
 
@@ -11,10 +12,20 @@ class IndividualColumnView(views.APIView):
 
     def get(self, request, silo_id, table_name, column_name):
         """Used to retrieve a single column within a table."""
+        if not (
+            self.validate_identifier(str(table_name))
+            and self.validate_identifier(str(column_name))
+        ):
+            return response.Response(
+                {"detail": "Invalid identifiers provided"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         try:
             user_silo = UserSilo.objects.get(id=silo_id, user=request.user)
-            silo_id = user_silo.id
-            column_details = self.get_column_details(silo_id, table_name, column_name)
+            column_details = self.get_column_details(
+                str(user_silo.id), str(table_name), str(column_name)
+            )
             return response.Response(column_details, status=status.HTTP_200_OK)
         except UserSilo.DoesNotExist:
             return response.Response(
@@ -25,44 +36,29 @@ class IndividualColumnView(views.APIView):
                 {"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-    def patch(self, request, silo_id, table_name, column_name):
-        """Used to update a single column within a table."""
-        try:
-            user_silo = UserSilo.objects.get(id=silo_id, user=request.user)
-            silo_id = user_silo.id
-            new_column_name = request.data.get("column_name")
-            new_column_type = request.data.get("column_type")
-            if not new_column_name or not new_column_type:
-                return response.Response(
-                    {"detail": "Column name or type not provided"},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-
-            with transaction.atomic():
-                self.update_column_details(
-                    silo_id, table_name, column_name, new_column_name, new_column_type
-                )
-                return response.Response(
-                    {"detail": "Column updated successfully"}, status=status.HTTP_200_OK
-                )
-        except UserSilo.DoesNotExist:
-            return response.Response(
-                {"detail": "Silo not found"}, status=status.HTTP_404_NOT_FOUND
-            )
-        except DatabaseError as e:
-            transaction.rollback()
-            return response.Response(
-                {"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
     def delete(self, request, silo_id, table_name, column_name):
-        """Used to delete a table within a silo."""
+        """Used to delete a single column within a table."""
+        if not (
+            self.validate_identifier(str(table_name))
+            and self.validate_identifier(str(column_name))
+        ):
+            return response.Response(
+                {"detail": "Invalid identifiers provided"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if column_name == "id":
+            return response.Response(
+                {"detail": "Cannot delete primary key column"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         try:
             with transaction.atomic():
                 user_silo = UserSilo.objects.get(id=silo_id, user=request.user)
                 self.delete_column(str(user_silo.id), str(table_name), str(column_name))
                 return response.Response(
-                    {"detail": "Table deleted successfully"},
+                    {"detail": "Column deleted successfully"},
                     status=status.HTTP_204_NO_CONTENT,
                 )
         except UserSilo.DoesNotExist:
@@ -76,46 +72,40 @@ class IndividualColumnView(views.APIView):
             )
 
     @staticmethod
-    def get_column_details(silo_id, table_name, column_name):
-        """Used to retrieve a single column within a table using direct SQL."""
+    def get_column_details(silo_id: str, table_name: str, column_name: str):
+        """Retrieve a single column within a table using direct SQL safely."""
         with connection.cursor() as cursor:
-            cursor.execute(
-                f"""
-                SELECT column_name, data_type
+            query = sql.SQL(
+                """
+                SELECT *
                 FROM information_schema.columns
-                WHERE table_schema = '{silo_id}'
-                AND table_name = '{table_name}'
-                AND column_name = '{column_name}';
+                WHERE table_schema = %s AND table_name = %s AND column_name = %s;
             """
             )
+            cursor.execute(query, [silo_id, table_name, column_name])
             column = cursor.fetchone()
             return column
 
     @staticmethod
-    def update_column_details(
-        silo_id, table_name, column_name, new_column_name, new_column_type
-    ):
-        """Used to update a single column within a table using direct SQL."""
+    def delete_column(silo_id: str, table_name: str, column_name: str):
+        """Delete a single column within a table using direct SQL safely."""
         with connection.cursor() as cursor:
-            cursor.execute(
-                f"""
-                ALTER TABLE "{silo_id}"."{table_name}"
-                RENAME COLUMN "{column_name}" TO "{new_column_name}";
-                ALTER TABLE "{silo_id}"."{table_name}"
-                ALTER COLUMN "{new_column_name}" TYPE {new_column_type};
+            query = sql.SQL(
+                """
+                ALTER TABLE {silo}.{table}
+                DROP COLUMN IF EXISTS {column};
             """
+            ).format(
+                silo=sql.Identifier(silo_id),
+                table=sql.Identifier(table_name),
+                column=sql.Identifier(column_name),
             )
+            cursor.execute(query)
 
     @staticmethod
-    def delete_column(silo_id, table_name, column_name):
-        """Used to delete a single column within a table using direct SQL."""
-        with connection.cursor() as cursor:
-            cursor.execute(
-                f"""
-                ALTER TABLE "{silo_id}"."{table_name}"
-                DROP COLUMN IF EXISTS "{column_name}";
-            """
-            )
+    def validate_identifier(identifier):
+        """Validate identifiers to ensure they are alphanumeric or underscores."""
+        return re.match(r"^[A-Za-z0-9_]+$", identifier)
 
 
 class SiloColumnView(views.APIView):
@@ -156,7 +146,6 @@ class SiloColumnView(views.APIView):
             check_constraint = request.data.get("checkConstraint")
             is_unique = request.data.get("isUnique")
             is_nullable = request.data.get("isNullable")
-            is_primary_key = request.data.get("isPrimaryKey")
             create_index = request.data.get("createIndex")
             collation = request.data.get("collation")
 
@@ -176,7 +165,6 @@ class SiloColumnView(views.APIView):
                     check_constraint,
                     is_unique,
                     is_nullable,
-                    is_primary_key,
                     create_index,
                     collation,
                 )
@@ -241,7 +229,6 @@ class SiloColumnView(views.APIView):
         check_constraint=None,
         is_unique=False,
         is_nullable=True,
-        is_primary_key=False,
         create_index=False,
         collation=None,
     ):
@@ -278,8 +265,6 @@ class SiloColumnView(views.APIView):
         if modifiers:
             sql += " " + " ".join(modifiers)
 
-        if is_primary_key:
-            sql += f', ADD PRIMARY KEY ("{column_name}")'
         if create_index:
             sql += f'; CREATE INDEX ON "{silo_id}"."{table_name}" ("{column_name}")'
 

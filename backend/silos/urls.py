@@ -14,6 +14,9 @@ from .viewsColumns import (
 )
 from .viewsRows import (
     IndividualSiloRowView,
+    BatchAddSiloRowView,
+    BatchDeleteSiloRowView,
+    BatchUpdateSiloRowView,
     SiloRowView,
 )
 
@@ -41,6 +44,21 @@ urlpatterns = [
         "<str:silo_id>/tables/<str:table_name>/rows/",
         SiloRowView.as_view(),
         name="silo-row",
+    ),
+    path(
+        "<str:silo_id>/tables/<str:table_name>/rows/batch/add/",
+        BatchAddSiloRowView.as_view(),
+        name="batch-add-silo-row",
+    ),
+    path(
+        "<str:silo_id>/tables/<str:table_name>/rows/batch/update/",
+        BatchUpdateSiloRowView.as_view(),
+        name="batch-update-silo-row",
+    ),
+    path(
+        "<str:silo_id>/tables/<str:table_name>/rows/batch/delete/",
+        BatchDeleteSiloRowView.as_view(),
+        name="batch-delete-silo-row",
     ),
     path(
         "<str:silo_id>/tables/<str:table_name>/rows/<str:row_id>/",

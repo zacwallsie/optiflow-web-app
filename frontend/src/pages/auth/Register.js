@@ -10,10 +10,13 @@ import useResponsive from "../../hooks/useResponsive"
 import { PATH_AUTH } from "../../routes/paths"
 // components
 import Page from "../../components/Page"
-import Logo from "../../components/Logo"
-import Image from "../../components/Image"
 // sections
 import { RegisterForm } from "../../sections/auth/register"
+import EditIcon from "@mui/icons-material/Edit"
+import CloudIcon from "@mui/icons-material/Cloud"
+import SecurityIcon from "@mui/icons-material/Security"
+import ApiIcon from "@mui/icons-material/Api"
+import { OptiFlowLogo } from "../../assets"
 
 // ----------------------------------------------------------------------
 
@@ -25,11 +28,29 @@ const RootStyle = styled("div")(({ theme }) => ({
 
 const SectionStyle = styled(Card)(({ theme }) => ({
 	width: "100%",
-	maxWidth: 464,
+	maxWidth: 720,
 	display: "flex",
 	flexDirection: "column",
 	justifyContent: "center",
-	margin: theme.spacing(2, 0, 2, 2),
+	margin: theme.spacing(2, 2),
+	padding: theme.spacing(4),
+	borderRadius: theme.shape.borderRadius,
+	boxShadow: theme.shadows[5],
+	textAlign: "center",
+}))
+
+const FeatureList = styled("div")(({ theme }) => ({
+	display: "grid",
+	gridTemplateColumns: "repeat(2, 1fr)",
+	gap: theme.spacing(3),
+	marginTop: theme.spacing(3),
+}))
+
+const FeatureItem = styled(Box)(({ theme }) => ({
+	display: "flex",
+	alignItems: "center",
+	gap: theme.spacing(2),
+	textAlign: "left",
 }))
 
 const ContentStyle = styled("div")(({ theme }) => ({
@@ -56,8 +77,30 @@ export default function Register() {
 			<RootStyle>
 				{mdUp && (
 					<SectionStyle>
-						<Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-							Make managing your Data simple with OptiFlow
+						<OptiFlowLogo />
+						<Typography variant="h3" sx={{ mb: 4 }}>
+							Welcome to OptiFLow
+						</Typography>
+						<FeatureList>
+							<FeatureItem>
+								<EditIcon color="primary" />
+								<Typography variant="body2">Edit and manage databases as easily as using a spreadsheet.</Typography>
+							</FeatureItem>
+							<FeatureItem>
+								<CloudIcon color="primary" />
+								<Typography variant="body2">All your data is securely stored and accessible in the cloud.</Typography>
+							</FeatureItem>
+							<FeatureItem>
+								<SecurityIcon color="primary" />
+								<Typography variant="body2">Bank-level security ensures your data is protected.</Typography>
+							</FeatureItem>
+							<FeatureItem>
+								<ApiIcon color="primary" />
+								<Typography variant="body2">Seamlessly integrate with other applications using our comprehensive API.</Typography>
+							</FeatureItem>
+						</FeatureList>
+						<Typography variant="caption" sx={{ mt: 3, display: "block", textAlign: "center" }}>
+							We value your privacy and protect your data with advanced security measures.
 						</Typography>
 					</SectionStyle>
 				)}
