@@ -26,7 +26,7 @@ RUN rm -rf ./*
 COPY --from=builder /app/frontend/build .
 
 # Expose ports for HTTP and HTTPS
-EXPOSE 80 443
+EXPOSE 3000
 
 # Set the default command to run Nginx in the foreground
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
