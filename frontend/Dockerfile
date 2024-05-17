@@ -5,7 +5,7 @@ FROM node:16-buster-slim AS builder
 WORKDIR /app/frontend
 
 # Copy package.json and yarn.lock files
-COPY ["package.json", "yarn.lock", "./"]
+COPY ["package.json", "yarn.lock", "config-overrides.js", "./"]
 
 # Copy public and src directories
 COPY ["public/", "public/"]
