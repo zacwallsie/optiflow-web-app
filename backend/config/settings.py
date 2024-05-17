@@ -37,7 +37,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://*.localhost:*",
     "http://localhost:*",
     "https://stage-api.example.com",
-    "https://api.example.com",
+    "https://optiflow.com",
 ]
 
 # Application definition
@@ -204,8 +204,7 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "https://example.com",
-    "https://sub.example.com",
+    "https://optiflow.com",
     "http://localhost:8080",
     "http://localhost:8000",
     "http://localhost:80",  # React App will be on this port
