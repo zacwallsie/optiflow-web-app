@@ -10,12 +10,7 @@ COPY ["package.json", "yarn.lock", "config-overrides.js", "./"]
 # Copy public and src directories
 COPY ["public/", "public/"]
 COPY ["src/", "src/"]
-
-# Install dependencies with Yarn
-RUN yarn install
-
-# Build the project
-RUN yarn build
+COPY ["build/", "build/"]
 
 # Second stage: Serve using Nginx
 FROM nginx:1.21.4-alpine
