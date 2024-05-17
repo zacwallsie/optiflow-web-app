@@ -4,6 +4,7 @@ version: "3.9"
 
 services:
     django:
+        image: python:3.12.3-bookworm
         restart: unless-stopped
         build: ./backend
         environment:
