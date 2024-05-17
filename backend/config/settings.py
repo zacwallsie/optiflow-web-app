@@ -8,15 +8,18 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 from datetime import timedelta
 from django.core.management.utils import get_random_secret_key
 
-DB_HOST = os.environ.get("DATABASE_HOST")
-DB_NAME = os.environ.get("DATABASE_NAME")
-DB_USER = os.environ.get("DATABASE_USERNAME")
-DB_PASSWORD = os.environ.get("DATABASE_PASSWORD")
-DB_PORT = os.environ.get("DATABASE_PORT")
+load_dotenv()
+
+DB_HOST = os.environ.get("DB_HOST")
+DB_NAME = os.environ.get("DB_NAME")
+DB_USER = os.environ.get("DB_USER")
+DB_PASSWORD = os.environ.get("DB_PASSWORD")
+DB_PORT = os.environ.get("DB_PORT")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,8 +40,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://*.localhost:*",
     "http://localhost:*",
     "https://stage-api.example.com",
-    "https://optiflow.com",
-    "https://cloud.digitalocean.com",
+    "https://api.example.com",
 ]
 
 # Application definition
@@ -205,7 +207,8 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "https://optiflow.com",
+    "https://example.com",
+    "https://sub.example.com",
     "http://localhost:8080",
     "http://localhost:8000",
     "http://localhost:3000",  # React App will be on this port
