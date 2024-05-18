@@ -196,7 +196,7 @@ class SiloView(views.APIView):
         ):
             raise ValueError("Invalid UUID format")
 
-        db_username = os.environ.get("DB_SCHEMA_EDITOR_USERNAME")
+        db_username = os.environ.get("DB_USER")
         if not re.match(r"^\w+$", db_username):
             raise ValueError("Invalid database username format")
 

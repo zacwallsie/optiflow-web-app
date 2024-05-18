@@ -34,13 +34,15 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["localhost", "170.64.194.113", "10.126.0.3", "170.64.240.179"]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://*.localhost:*",
     "http://localhost:*",
     "https://stage-api.example.com",
     "https://api.example.com",
+    "http://170.64.194.113",
+    "https://170.64.194.113",
 ]
 
 # Application definition
@@ -111,7 +113,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": DB_NAME,
         "USER": DB_USER,
         "PASSWORD": DB_PASSWORD,
