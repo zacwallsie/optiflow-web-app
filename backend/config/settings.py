@@ -216,6 +216,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React App will be on this port
     "http://127.0.0.1:9000",
     "http://170.64.194.113:3000",
+    "http://127.0.0.1:3000",
 ]
 
 
